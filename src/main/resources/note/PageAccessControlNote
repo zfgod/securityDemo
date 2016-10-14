@@ -1,0 +1,31 @@
+页面对于权限的控制笔记：菜单 、页面、操作按钮 的显示控制
+      备注：系统的页面导航全部都由页面请求后台，后台判断有访问页面资源的权限才给予跳转,
+           把权限资源给到前台做菜单、按钮控制显示,后台同时有security拦截
+      系统用户角色的权限改动，需要重新登录重新加载
+1. 用户登录完成跳转action：/background/index  》securityManage/controller/BackgroundController.java:99
+         此时进入页面main.jsp 》WEB-INF/jsp/background/framework/main.jsp
+     主页面通过两个action：/background/top.html，/background/center.html 分别加载页面上部和左侧菜单及中心内容
+2. 左侧菜单加载说明 action： /background/left，
+   model返回用户具备的resources信息；
+   页面 WEB-INF/jsp/background/framework/left.jsp
+   依靠jstl标签和jquery： c:foreach + c:if test 筛选需要展示的菜单资源，并且展现的同时，根据resUrl生成href链接
+3. 页面按钮显示说明 点击查询用户: securityManage/controller/UserController.java:38
+    WEB-INF/jsp/common/taglib.jsp
+    <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+   用户列表页面引入SpringSecurity 标签：认证策略  ifAnyGranted、 ifAllGranted 、 ifNotGranted
+   (//标签中多个权限需逗号相隔
+   <sec:authorize ifAnyGranted="ROLE_sys_user_edit">
+            <a href="${pageContext.servletContext.contextPath }/background/user/getById.html?userId=${key.userId}&&type=1">
+                                     编辑
+            </a>
+   </sec:authorize>
+   )
+  疑问： 标签判断是如何得到资源并判断结果的呢,把 ROLE_sys_user_edit 发送后台认证 然后根据判断策略返回true/false
+       查看taglibs源码：/org/springframework/security/taglibs/velocity/Authz.class
+       三种策略的对应方法都被找：boolean allGranted(String var1);
+                            boolean anyGranted(String var1); boolean noneGranted(String var1);
+       查看其实现类：org.springframework.security.taglibs.velocity.AuthzImpl.ifGranted() 了解运行原理
+       debug追踪：result = authorizeTag.doStartTag();
+       org.springframework.security.taglibs.authz.JspAuthorizeTag#doStartTag.doStartTag()
+       org.springframework.security.taglibs.authz.AbstractAuthorizeTag#authorize.authorize()
+       最终返回：return 1 == result;  回到页面标签处 执行后续加载

@@ -1,0 +1,36 @@
+security流程笔记
+1 系统启动，将会装载整个系统配置的权限资源:
+   MySecurityMetadataSource.getAttributes()
+   resourceMap : <String, Collection<ConfigAttribute>>
+   每一个resUrl对应key,resKey拼接“ROLE_”创建一个configAttribute
+   ConfigAttribute configAttribute = new SecurityConfig("ROLE_" + resource.getResKey());
+   				configAttributes.add(configAttribute);
+   				resourceMap.put(resource.getResUrl(), configAttributes);
+2 用户登录完成:
+  调用： authenticate(userName,password)
+  Authentication authentication = myAuthenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username,password));
+   进入自定义的登录用户的权限资源装载：
+       MyUserDetailServiceImpl.loadUserByUserName();
+       将会获取用户持有的权限资源,转为SecurityContext，存入session,
+3 用户访问资源及操作：security 在action之前进去拦截,根据url获取所需权限信息并进行认证
+       MySecurityMetadataSource.getAttributes(),
+       获取url,
+       从系统配置的resourceMap中获取此url所需要的Collection<ConfigAttribute> configAttributes
+       然后进入自定义security认证管理器：MyAccessDecisionManager.decide()
+       认证过程： 遍历此url所需的configAttributes,
+       从用户的Collection<? extends GrantedAuthority> authorities ,中获取每个权限进行比对
+       匹配正确一个即通过
+
+ 疑问：1. 从现有数据库内容来看，一个resUrl对应了一个resKey，
+		但是装载权限认证信息时，一个resUrl,对应的是一个集合，集合元素是由resKey得到的ConfigAttribute
+		那么是不是存在需求： 一个resUrl对应两个resKey, 然后这里resourceMap中一个resUrl(key),就有了两个元素
+		所以，当前循环resource时，并没有对 resourceMap是否已经存在此resUrl的key作判断，
+		而是每次都重新put了一个新的集合，然后此集合就此来看只有一个元素：当前resKey所构造的ConfigAttribute
+      2. 接着上述疑问就是 后续的认证过程，
+		 MyAccessDecisionManager.decide() 认证过程中,
+		 遍历请求url所装配的Collection<ConfigAttribute> configAttributes 时
+		 是按照它会存在多个configAttribute 进行的，然后登陆用户的认证信息如果匹配上其中一个，就放行
+	  3. 推测是：一个resUrl可以对应多个resKey,逻辑为多个resKey中用户持一个就通行，
+			 然后自定义的初始化系统权限认证信息装载应该做修改：
+			 判断resourceMap的key,key已有做追加,没有就新建集合放入当前元素
+      4. resUrl--resKey 的对应关系 是可以自定义的吗，一对一，一对多？ 一对多时的认证策略：或/并 ?

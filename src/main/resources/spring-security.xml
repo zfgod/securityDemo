@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/security"
+	xmlns:beans="http://www.springframework.org/schema/beans" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans-4.2.xsd
+	http://www.springframework.org/schema/security 
+	http://www.springframework.org/schema/security/spring-security-3.2.xsd">
+	<http pattern="/*.js"   security="none" />
+	<http pattern="/*.css"  security="none" />
+	<http pattern="/*.png"  security="none" />
+    <http pattern="/index.html"  security="none" />
+    <http pattern="/denied.html" security="none" />
+    <http pattern="/login.html"  security="none" />
+
+	<!-- 请求登录页-->
+    <http pattern="/sys/toLogin.html" security="none" />
+	<!-- 登录信息提交-->
+    <http pattern="/sys/commitLogin.html" security="none" />
+
+	<http use-expressions="true" auto-config="false" 
+		  entry-point-ref="myAuthenticationEntryPoint" access-denied-page="/denied.html">
+
+        <intercept-url pattern="/*" access="isAuthenticated()" />
+
+
+		<!-- 路径： resource.security.MySecurityFilter -->
+        <custom-filter ref="mySecurityFilter" before="FILTER_SECURITY_INTERCEPTOR"/>
+	</http>
+
+ <!-- 未登录的切入点 -->
+    <beans:bean id="myAuthenticationEntryPoint"
+				class="org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint">
+        <beans:property name="loginFormUrl" value="/sys/toLogin.html"></beans:property>
+    </beans:bean>
+
+
+	<authentication-manager alias="myAuthenticationManager">
+		<!-- 路径：resource.security.MyUserDetailServiceImpl-->
+		<authentication-provider user-service-ref="myUserDetailServiceImpl" />
+	</authentication-manager>
+	
+</beans:beans>

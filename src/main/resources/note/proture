@@ -1,0 +1,15 @@
+技术框架：h5+(angularJs1+jquery)+springMvc4.2.3+springSecurity3.2.3+Spring4.2.3+mybatis3.3.1
+开发环境和工具：idea + maven + tomcat
+
+security：  自定义系统权限资源加载 resource.secImpl.MySecurityMetadataSource (while resourceMap=null，加载系统资源）
+           +自定义登录(未使用security的登录) sys/controller/SysController.java  :commitLogin()
+           +自定义登录用户权限资源加载
+               (resource.secImpl.MyUserDetailServiceImpl,系统判断登录成功,调用security实现用户UserDetails加载)
+           +自定义权限认证
+               (属于系统过滤需要的资源，
+               先根据url,获取所需认证权限资源，resource.secImpl.MySecurityMetadataSource.getAttributes()
+               再进入decide()方法进行自定义认证)
+           +自定义权限过滤器 resource.secImpl.MySecurityFilter ：过滤的细节都在spring-security.xml中配置
+
+
+
