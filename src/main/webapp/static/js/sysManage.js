@@ -16,7 +16,7 @@ sysApp.controller('LoginCtrl', ['$rootScope','$scope','$http',
                .success(function (data) {
                    if(data.code == 200){
                        alert(data.msg);
-                       window.location.href=baseUrl+resUrl.sys.main;
+                       window.location.href = baseUrl+viewPath.base+viewPath.sys.main;
                    }else if(data.code == 500){
                        $scope.loginError = data.loginError;
                        $scope.showError = 1;

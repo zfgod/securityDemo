@@ -1,5 +1,7 @@
 package sys.model;
 
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
@@ -16,36 +18,20 @@ public class User implements Serializable{
     private String userName;
 
     @Column(name="userPassword")
+    @JsonIgnore
     private String userPassword;
 
-    @Column(name = "userNickName")
-    private String userNickname;
-
-    @Column(name = "userRealname")
-    private String userRealname;
-
-    @Column(name = "userAge")
-    private Integer userAge;
-
-    @Column(name = "userSex")
-    private String userSex;
-
-    @Column(name = "userAddress")
-    private String userAddress;
+    @Column(name = "userRealName")
+    private String userRealName;
 
     @Column(name = "userPhone")
     private String userPhone;
 
-    @Column(name = "userEmail")
-    private String usermail;
-    @Column(name = "userqQQ")
-    private String userqQQ;
+    @Column(name = "userQQ")
+    private String userQQ;
 
     @Column(name = "regTime")
     private Date regTime;
-
-    @Column(name = "lastLogintime")
-    private Date lastLogintime;
 
     @Column(name = "status")
     private String status;
@@ -59,16 +45,10 @@ public class User implements Serializable{
                 "userId=" + userId +
                 ", userName='" + userName + '\'' +
                 ", userPassword='" + userPassword + '\'' +
-                ", userNickname='" + userNickname + '\'' +
-                ", userRealname='" + userRealname + '\'' +
-                ", userAge=" + userAge +
-                ", userSex='" + userSex + '\'' +
-                ", userAddress='" + userAddress + '\'' +
+                ", userRealName='" + userRealName + '\'' +
                 ", userPhone='" + userPhone + '\'' +
-                ", usermail='" + usermail + '\'' +
-                ", userqQQ='" + userqQQ + '\'' +
+                ", userQQ='" + userQQ + '\'' +
                 ", regTime=" + regTime +
-                ", lastLogintime=" + lastLogintime +
                 ", status='" + status + '\'' +
                 '}';
     }
@@ -97,44 +77,12 @@ public class User implements Serializable{
         this.userPassword = userPassword;
     }
 
-    public String getUserNickname() {
-        return userNickname;
+    public String getUserRealName() {
+        return userRealName;
     }
 
-    public void setUserNickname(String userNickname) {
-        this.userNickname = userNickname;
-    }
-
-    public String getUserRealname() {
-        return userRealname;
-    }
-
-    public void setUserRealname(String userRealname) {
-        this.userRealname = userRealname;
-    }
-
-    public Integer getUserAge() {
-        return userAge;
-    }
-
-    public void setUserAge(Integer userAge) {
-        this.userAge = userAge;
-    }
-
-    public String getUserSex() {
-        return userSex;
-    }
-
-    public void setUserSex(String userSex) {
-        this.userSex = userSex;
-    }
-
-    public String getUserAddress() {
-        return userAddress;
-    }
-
-    public void setUserAddress(String userAddress) {
-        this.userAddress = userAddress;
+    public void setUserRealName(String userRealName) {
+        this.userRealName = userRealName;
     }
 
     public String getUserPhone() {
@@ -145,20 +93,12 @@ public class User implements Serializable{
         this.userPhone = userPhone;
     }
 
-    public String getUsermail() {
-        return usermail;
+    public String getUserQQ() {
+        return userQQ;
     }
 
-    public void setUsermail(String usermail) {
-        this.usermail = usermail;
-    }
-
-    public String getUserqQQ() {
-        return userqQQ;
-    }
-
-    public void setUserqQQ(String userqQQ) {
-        this.userqQQ = userqQQ;
+    public void setUserQQ(String userQQ) {
+        this.userQQ = userQQ;
     }
 
     public Date getRegTime() {
@@ -167,14 +107,6 @@ public class User implements Serializable{
 
     public void setRegTime(Date regTime) {
         this.regTime = regTime;
-    }
-
-    public Date getLastLogintime() {
-        return lastLogintime;
-    }
-
-    public void setLastLogintime(Date lastLogintime) {
-        this.lastLogintime = lastLogintime;
     }
 
     public String getStatus() {

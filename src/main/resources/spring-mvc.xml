@@ -34,7 +34,7 @@
     <mvc:default-servlet-handler/>
     <!-- 视图解析器-->
     <bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-        <property name="prefix" value="/WEB-INF/pages/"></property>
+        <property name="prefix" value="/pages/"></property>
         <property name="suffix" value=".html"></property>
     </bean>
     <!-- 文件上传解析器 -->

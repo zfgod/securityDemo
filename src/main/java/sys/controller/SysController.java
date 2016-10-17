@@ -81,7 +81,7 @@ public class SysController extends BaseController{
      */
     @RequestMapping(value = "/main")
     public String goMain(Model model){
-        model.addAttribute("loginUser",session.getAttribute(ParamsUtils.user_sessin));
+       model.addAttribute("loginUser",session.getAttribute(ParamsUtils.user_sessin));
        return "sys/main";
     }
 

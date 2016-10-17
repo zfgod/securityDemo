@@ -15,16 +15,16 @@ public class Resources implements Serializable {
     @Column(name = "name")
     private String name;
 
-    @Column(name = "parentid")
+    @Column(name = "parentId")
     private Integer parentId;
 
-    @Column(name = "reskey")
+    @Column(name = "resKey")
     private String resKey;
 
     @Column(name = "type")
     private String type;
 
-    @Column(name = "resurl")
+    @Column(name = "resUrl")
     private String resUrl;
 
     @Column(name = "level")

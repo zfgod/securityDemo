@@ -6,19 +6,22 @@
 	http://www.springframework.org/schema/beans/spring-beans-4.2.xsd
 	http://www.springframework.org/schema/security 
 	http://www.springframework.org/schema/security/spring-security-3.2.xsd">
-	<http pattern="/*.js"   security="none" />
-	<http pattern="/*.css"  security="none" />
-	<http pattern="/*.png"  security="none" />
-    <http pattern="/index.html"  security="none" />
-    <http pattern="/denied.html" security="none" />
-    <http pattern="/login.html"  security="none" />
+	<!-- 资源后缀匹配放行 -->
+	<http pattern="/*.html"  security="none" /><!-- 例：webapp下面index.html -->
+	<http pattern="/**/*.html"  security="none" />
+	<http pattern="/**/*.js"   security="none" />
+	<http pattern="/**/*.css"  security="none" />
+	<http pattern="/**/*.png"  security="none" />
+	<!-- 这里采用静态页面+js请求数据,导航由前端做控制,后台直接放行
+	     注意：静态资源的放行,多层目录pattern匹配是/**/*.js 而不是/*.js 或者*.js
+	     多层目录/**
+	-->
 
-	<!-- 请求登录页-->
-    <http pattern="/sys/toLogin.html" security="none" />
-	<!-- 登录信息提交-->
-    <http pattern="/sys/commitLogin.html" security="none" />
+	<!-- 登录相关-->
+    <http pattern="/sys/commitLogin.do" security="none" />
+    <http pattern="/sys/loginOut.do" security="none" />
 
-	<http use-expressions="true" auto-config="false" 
+	<http use-expressions="true" auto-config="false"
 		  entry-point-ref="myAuthenticationEntryPoint" access-denied-page="/denied.html">
 
         <intercept-url pattern="/*" access="isAuthenticated()" />
@@ -31,7 +34,7 @@
  <!-- 未登录的切入点 -->
     <beans:bean id="myAuthenticationEntryPoint"
 				class="org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint">
-        <beans:property name="loginFormUrl" value="/sys/toLogin.html"></beans:property>
+        <beans:property name="loginFormUrl" value="/pages/sys/login.html"></beans:property>
     </beans:bean>
 
 

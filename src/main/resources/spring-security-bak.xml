@@ -30,7 +30,7 @@
 		access-denied-page的意思是，当验证权限失败后会跳转到的页面
 	-->
 	<http use-expressions="true" auto-config="false" 
-		  entry-point-ref="myAuthenticationEntryPoint" access-denied-page="/denied.jsp">
+		  entry-point-ref="myAuthenticationEntryPoint" access-denied-page="/denied.html">
 
 	
         <!-- 关联代码：securityManage.security.MySecurityMetadataSource#loadResourceDefine
