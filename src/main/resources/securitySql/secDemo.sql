@@ -1,6 +1,6 @@
 /*
 SQLyog Ultimate v12.09 (64 bit)
-MySQL - 5.6.22-log : Database - security
+MySQL - 5.6.22-log : Database - secdemo
 *********************************************************************
 */
 
@@ -47,21 +47,23 @@ CREATE TABLE `resources` (
 
 /*Data for the table `resources` */
 
-insert  into `resources`(`id`,`name`,`parentId`,`resKey`,`type`,`resUrl`,`level`,`description`) values (1,'权限资源管理',1000,'resManage','1','/resManage',1,'权限资源管理菜单'),(2,'权限资源查询',1,'resQuery','2','/resManage/resQuery.html',2,'权限资源查看'),(3,'权限资源添加',1,'resAdd','2','/resManage/resAdd.html',2,'权限资源添加'),(1000,'系统主页',0,'resMain','0','/sys/main.html',0,'系统主页访问');
+insert  into `resources`(`id`,`name`,`parentId`,`resKey`,`type`,`resUrl`,`level`,`description`) values (1,'权限资源管理',1000,'resManage','1','/resManage',1,'权限资源管理菜单'),(2,'权限资源查询',1,'resQuery','2','/resManage/resQuery.do',2,'权限资源查看'),(3,'权限资源添加',1,'resAdd','2','/resManage/resAdd.do',2,'权限资源添加'),(1000,'系统主页',0,'resMain','0','/sys/main.html',0,'系统主页访问');
 
 /*Table structure for table `resources_role` */
 
 DROP TABLE IF EXISTS `resources_role`;
 
 CREATE TABLE `resources_role` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `resc_id` int(11) NOT NULL,
   `role_id` int(11) NOT NULL,
-  PRIMARY KEY (`resc_id`,`role_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  PRIMARY KEY (`id`),
+  KEY `id` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 
 /*Data for the table `resources_role` */
 
-insert  into `resources_role`(`resc_id`,`role_id`) values (1,1),(2,1),(3,1),(1000,1);
+insert  into `resources_role`(`id`,`resc_id`,`role_id`) values (1,1,1),(2,2,1),(3,3,1),(4,1000,1);
 
 /*Table structure for table `role` */
 
@@ -74,7 +76,7 @@ CREATE TABLE `role` (
   `description` varchar(200) DEFAULT NULL,
   `enable` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 /*Data for the table `role` */
 
@@ -85,7 +87,7 @@ insert  into `role`(`id`,`name`,`roleKey`,`description`,`enable`) values (1,'超
 DROP TABLE IF EXISTS `serverinfo`;
 
 CREATE TABLE `serverinfo` (
-  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `id` int(10) NOT NULL DEFAULT '0',
   `cpuUsage` varchar(255) DEFAULT NULL,
   `setCpuUsage` varchar(255) DEFAULT NULL,
   `jvmUsage` varchar(255) DEFAULT NULL,
@@ -94,9 +96,8 @@ CREATE TABLE `serverinfo` (
   `setRamUsage` varchar(255) DEFAULT NULL,
   `email` varchar(255) DEFAULT NULL,
   `operTime` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
-  `mark` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
+  `mark` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 /*Data for the table `serverinfo` */
 
@@ -110,50 +111,32 @@ CREATE TABLE `user` (
   `userId` int(11) NOT NULL AUTO_INCREMENT,
   `userName` varchar(20) DEFAULT NULL,
   `userPassword` varchar(40) DEFAULT NULL,
-  `userNickname` varchar(20) DEFAULT NULL,
-  `userRealname` varchar(20) DEFAULT NULL,
-  `userAge` int(11) DEFAULT NULL,
-  `userSex` varchar(10) DEFAULT NULL,
-  `userAddress` varchar(100) DEFAULT NULL,
+  `userRealName` varchar(20) DEFAULT NULL,
   `userPhone` varchar(30) DEFAULT NULL,
-  `userMail` varchar(45) DEFAULT NULL,
   `userQQ` varchar(30) DEFAULT NULL,
   `regTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `lastLogintime` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `level` int(11) DEFAULT NULL,
-  `province` varchar(50) DEFAULT NULL,
-  `city` varchar(50) DEFAULT NULL,
-  `bankName` varchar(100) DEFAULT NULL,
-  `branchBank` varchar(100) DEFAULT NULL,
-  `subbranchBank` varchar(100) DEFAULT NULL,
-  `openBankName` varchar(100) DEFAULT NULL,
-  `bankAccountName` varchar(100) DEFAULT NULL,
-  `bankAccount` varchar(100) DEFAULT NULL,
-  `accountType` varchar(20) DEFAULT NULL,
-  `pay` varchar(20) DEFAULT NULL,
-  `mark` varchar(200) DEFAULT NULL,
   `status` varchar(20) DEFAULT NULL,
-  `parentNumber` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`userId`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 /*Data for the table `user` */
 
-insert  into `user`(`userId`,`userName`,`userPassword`,`userNickname`,`userRealname`,`userAge`,`userSex`,`userAddress`,`userPhone`,`userMail`,`userQQ`,`regTime`,`lastLogintime`,`level`,`province`,`city`,`bankName`,`branchBank`,`subbranchBank`,`openBankName`,`bankAccountName`,`bankAccount`,`accountType`,`pay`,`mark`,`status`,`parentNumber`) values (1,'admin','admin','admin','admin',10,'男','枯霜下要孤','0253526','jnfjfjj@163.com','32432','2016-10-11 13:48:45','0000-00-00 00:00:00',1,'admin','','',NULL,'',NULL,'','',NULL,NULL,'',NULL,'');
+insert  into `user`(`userId`,`userName`,`userPassword`,`userRealName`,`userPhone`,`userQQ`,`regTime`,`status`) values (1,'admin','admin','admin','0253526','32432','2016-10-11 13:48:45',NULL);
 
 /*Table structure for table `user_role` */
 
 DROP TABLE IF EXISTS `user_role`;
 
 CREATE TABLE `user_role` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `user_id` bigint(20) NOT NULL DEFAULT '0',
   `role_id` bigint(20) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`user_id`,`role_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 /*Data for the table `user_role` */
 
-insert  into `user_role`(`user_id`,`role_id`) values (1,1);
+insert  into `user_role`(`id`,`user_id`,`role_id`) values (1,1,1);
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;

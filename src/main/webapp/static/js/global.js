@@ -25,7 +25,7 @@ var resUrl = {
     //用户管理：
     users:{},
     //资源管理：
-    resources:{}
+    resources:{query:"/resManage/resQuery.do",add:"/resManage/resAdd.do"}
 }
    // 2.页面导航布局地址
 var viewPath = {
