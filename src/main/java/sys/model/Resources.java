@@ -108,6 +108,9 @@ public class Resources implements Serializable {
         this.description = description;
     }
 
+    public Resources() {
+    }
+
     @Override
     public String toString() {
         return "Resources{" +

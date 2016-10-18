@@ -1,0 +1,34 @@
+<!--
+            增加一个filter，这个filter位于FILTER_SECURITY_INTERCEPTOR之前
+        -->
+        <custom-filter ref="myFilter" before="FILTER_SECURITY_INTERCEPTOR" />
+<!--
+        一个自定义的filter，必须包含:
+        authenticationManager,accessDecisionManager,securityMetadataSource三个属性，
+        所有控制将在这三个类中实现
+    -->
+    <beans:bean id="myFilter"
+        class="com.authority.spring.security.MyFilterSecurityInterceptor">
+        <beans:property name="authenticationManager" ref="authenticationManager" />
+        <beans:property name="accessDecisionManager" ref="myAccessDecisionManagerBean" />
+        <beans:property name="securityMetadataSource" ref="securityMetadataSource" />
+    </beans:bean>
+
+    <!--验证配置，认证管理器，实现用户认证的入口，主要实现UserDetailsService接口即可 -->
+    <authentication-manager alias="authenticationManager">
+        <authentication-provider user-service-ref="myUserDetailService">
+            <!--如果用户的密码采用加密的话
+<password-encoder hash="md5" />
+            -->
+        </authentication-provider>
+    </authentication-manager>
+    <!--在这个类中，可以从数据库中读入用户的密码，角色信息，是否锁定，账号是否过期等 -->
+    <beans:bean id="myUserDetailService"
+        class="com.authority.spring.security.MyUserDetailService" />
+    <!--访问决策器，决定某个用户具有的角色，是否有足够的权限去访问某个资源 -->
+    <beans:bean id="myAccessDecisionManagerBean"
+        class="com.authority.spring.security.MyAccessDecisionManager">
+    </beans:bean>
+    <!--资源源数据定义，将所有的资源和权限对应关系建立起来，即定义某一资源可以被哪些角色访问     -->
+    <beans:bean id="securityMetadataSource"
+        class="com.authority.spring.security.MyInvocationSecurityMetadataSource" />

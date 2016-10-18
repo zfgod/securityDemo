@@ -70,10 +70,14 @@ public class MySecurityMetadataSource implements FilterInvocationSecurityMetadat
 			loadResourceDefine();
 		}
 		//System.err.println("resourceMap.get(requestUrl); "+resourceMap.get(requestUrl));
-		if(requestUrl.indexOf("?")> -1){
+		if(requestUrl.indexOf("?")> -1){ //处理请求地址后面带参数
 			requestUrl=requestUrl.substring(0,requestUrl.indexOf("?"));
 		}
 		Collection<ConfigAttribute> configAttributes = resourceMap.get(requestUrl);
+/*如果为null,则为系统未定义的资源路径*/
+		if(configAttributes == null){
+			configAttributes = resourceMap.get("undefine");//此权限每个用户都不具有,则未加入的url不会通过
+		}
 		return configAttributes;
 	}
 

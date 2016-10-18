@@ -21,19 +21,27 @@ var getSearch = function (name) {
     // 1.数据请求接口地址
 var resUrl = {
     //系统：登录页，登录提交
-    sys:{comLogin:"/sys/commitLogin.do",main:"/sys/main.do"},
+    sys: {  comLogin:"/sys/commitLogin.do",
+            main:"/sys/main.do"},
     //用户管理：
     users:{},
     //资源管理：
-    resources:{query:"/resManage/resQuery.do",add:"/resManage/resAdd.do"}
+    resources:{ query:"/resManage/resQuery.do",
+                add:"/resManage/resAdd.do",
+                find:"/resManage/resFind.do",
+                edit:"/resManage/resEdit.do",
+                resSelect:"/resManage/resSelect.do"}
 }
    // 2.页面导航布局地址
 var viewPath = {
     base:"/pages",
     //系统：登录页，登录提交
-    sys:{ login:"/sys/login.html",main:"/sys/main.html",index:"/sys/index.html"},
+    sys:{ login:"/sys/login.html",
+          main:"/sys/main.html",
+          index:"/sys/index.html"},
     //用户管理：
     users:{},
     //资源管理：
-    resources:{list:"/resource/list.html",add:"/resource/add.html"}
+    resources:{ list:"/resource/list.html",
+                add:"/resource/add.html"}
 }

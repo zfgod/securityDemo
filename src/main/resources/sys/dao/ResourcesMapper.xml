@@ -26,6 +26,12 @@
           )
       ]]>
     </select>
+    <select id="getSelect" resultType="Resources">
+        <![CDATA[
+          SELECT id,name,level from resources
+        ]]>
+    </select>
+
     <select id="MODEL" resultType="Resources"
             parameterType="String">
       <![CDATA[

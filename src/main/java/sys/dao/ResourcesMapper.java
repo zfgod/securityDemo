@@ -14,4 +14,6 @@ public interface ResourcesMapper extends Mapper<Resources> {
      List<Resources> findAll();
 
      List<Resources> getUserResources(String s);
+
+     List<Resources> getSelect();
 }

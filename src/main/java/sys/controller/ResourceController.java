@@ -3,11 +3,13 @@ package sys.controller;
 import com.alibaba.fastjson.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import sys.model.Resources;
+import sys.model.User;
 import sys.service.ResourceService;
 
 import java.util.List;
@@ -48,16 +50,15 @@ public class ResourceController extends BaseController{
         }
         return result;
     }
-
-
-    @RequestMapping(value = "/")
-    public Object add(){
+    @RequestMapping(value = "/resFind",method = RequestMethod.GET)
+    @ResponseBody
+    public Object FindOne(Resources resources){
         JSONObject result = new JSONObject();
         try {
-            List<Resources> list = resourceService.findList();
-            if(null!=list && list.size()>0){
+            Resources res= resourceService.findOne(resources);
+            if(null!=resources ){
                 result.put("code",200);
-                result.put("resList",list);
+                result.put("res",res);
             }else {
                 result.put("code",404);
             }
@@ -66,5 +67,49 @@ public class ResourceController extends BaseController{
         }
         return result;
     }
+    /**
+     * @Description: 资源新增
+     * @author: zf
+     * @Date:   2016/10/18
+     */
+    @RequestMapping(value = "/resAdd",method = RequestMethod.POST)
+    @ResponseBody
+    public Object add(@RequestBody Resources resources){
+        JSONObject result = new JSONObject();
+        try {
+            int i = resourceService.addRes(resources);
+            if(i ==1 ){
+                result.put("code",200);
+                result.put("msg","添加成功");
+            }else {
+                result.put("code",500);
+                result.put("msg","添加失败");
+            }
+        }catch (Exception e){
+            result.put("code",500);
+            result.put("msg","添加失败");
+        }
+        return result;
+    }
+
+    @RequestMapping(value = "/resSelect",method = RequestMethod.GET)
+    @ResponseBody
+    public Object resSelect(){
+        JSONObject result = new JSONObject();
+        try {
+            List<Resources> list = resourceService.getSelect();
+            if(null!=list && list.size()>0){
+                result.put("code",200);
+                result.put("resList",list);
+            }else {
+                result.put("code",404);
+            }
+        }catch (Exception e){
+            result.put("code",500);
+            result.put("msg","获取失败");
+        }
+        return result;
+    }
+
 
 }

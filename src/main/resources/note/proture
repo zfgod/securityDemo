@@ -10,6 +10,39 @@ security：  自定义系统权限资源加载 resource.secImpl.MySecurityMetada
                先根据url,获取所需认证权限资源，resource.secImpl.MySecurityMetadataSource.getAttributes()
                再进入decide()方法进行自定义认证)
            +自定义权限过滤器 resource.secImpl.MySecurityFilter ：过滤的细节都在spring-security.xml中配置
+系统运行笔记：
+          1.资源权限的遗漏： url没有添加到系统资源权限管理中
+              当访问到来时：resource.secImpl.MySecurityMetadataSource.getAttributes() 判断认证权限为空，
+                          没有判断依据,直接放行,然后经springMVC解析,进入controller中
+              结论：倘若系统某个操作对应资源权限没有加入到资源权限表中,访问此路径是可以通过的;
+                   只有加入到权限资源中的路径，有了对应权限的判断依据，才可以进行判断并阻止访问。
+              处理：a.对于一些不重要的请求（只获取数据，如下拉）,如果确实没必要加入到权限资源中,可以默认放行
+
+                   b.处于拦截范围且不在权限资源中的路径考虑不给予通行，
+                     那么我觉得就需要修改自定义认证,resource.secImpl.MyAccessDecisionManager.decide(),
+                     if(configAttributes == null) {
+                     //			throw new AccessDeniedException("未加入系统资源配置,尚不通行！");
+                     			return;
+                     }
+                  判断configAttributes == null，目前是return,然后进入springMVC;如果直接抛异常,应该就能阻止访问
+                  那么系统如果请求过多或者不规则就需要对很多资源权限进行添加,有点多余。所以return更加性能,throw更加安全
+                   c.两者结合的处理：增设放行http pattern + 需要拦截的请求未加入系统资源权限都不通行
+                    对于这类不想要经过security的、只获取数据的路径开设一个通用路径：/**/letGo.do,这样也不用进入security判断一遍
+                    然后security在decide()中 判断configAttributes == null时进行throw
+                  **** 问题：当return configAttributes;configAttributes为null时，并不进入decide()中。。。。
+                         why?? 我尝试跟来一趟return后的源码,跟完了没发现哪里决定的要不要进入decide()方法,然后就直接进入controller了。。。
+                       but:我觉得我完全可以在判断url对应的权限configAttributes == null,
+                          return它之前就标记为未定义资源,并从resourceMap获取一个定义好的未加入url的权限,此权限每个用户都不具有
+                           然后进入decide()方法,此先判断是不是未定义资源并做处理（
+                               url匹配过程修改：
+                              if(configAttributes == null){
+                              			configAttributes = resourceMap.get("undefine");
+                              		}
+                           ）
+                          后续判断中就会判断为不具有此权限而抛出无权限异常。阻止访问！
+          2.资源新增及修改的影响：对于整个系统及登录用户都是有影响的
+
+
 
 
 
