@@ -36,18 +36,18 @@ DROP TABLE IF EXISTS `resources`;
 CREATE TABLE `resources` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(50) DEFAULT NULL,
-  `parentId` int(11) DEFAULT NULL,
+  `parentId` int(11) DEFAULT '0',
   `resKey` varchar(50) DEFAULT NULL,
   `type` varchar(10) DEFAULT NULL,
   `resUrl` varchar(200) DEFAULT NULL,
   `level` int(11) DEFAULT NULL,
   `description` varchar(200) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1001 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
 
 /*Data for the table `resources` */
 
-insert  into `resources`(`id`,`name`,`parentId`,`resKey`,`type`,`resUrl`,`level`,`description`) values (1,'权限资源管理',1000,'resManage','1','/resManage',1,'权限资源管理菜单'),(2,'权限资源查询',1,'resQuery','2','/resManage/resQuery.do',2,'权限资源查看'),(3,'权限资源添加',1,'resAdd','2','/resManage/resAdd.do',2,'权限资源添加'),(1000,'系统主页',0,'resMain','0','/sys/main.html',0,'系统主页访问');
+insert  into `resources`(`id`,`name`,`parentId`,`resKey`,`type`,`resUrl`,`level`,`description`) values (0,'未定义资源',0,'sysUndefine','0','undefine',0,'未定义资源都转为获取此权限'),(1,'权限资源管理',0,'resManage','1','/resManage',1,'权限资源管理菜单'),(2,'权限资源查询',1,'resQuery','2','/resManage/resQuery.do',2,'权限资源查看'),(3,'权限资源添加',1,'resAdd','2','/resManage/resAdd.do',2,'权限资源添加'),(4,'权限资源获取',1,'resFind','2','/resManage/resFind.do',2,'获取单个权限资源信息'),(5,'用户管理',0,'userManage','1','userManage',1,'用户模块');
 
 /*Table structure for table `resources_role` */
 
@@ -59,11 +59,11 @@ CREATE TABLE `resources_role` (
   `role_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `id` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 
 /*Data for the table `resources_role` */
 
-insert  into `resources_role`(`id`,`resc_id`,`role_id`) values (1,1,1),(2,2,1),(3,3,1),(4,1000,1);
+insert  into `resources_role`(`id`,`resc_id`,`role_id`) values (1,1,1),(2,2,1),(3,3,1),(4,1000,1),(5,4,1);
 
 /*Table structure for table `role` */
 
