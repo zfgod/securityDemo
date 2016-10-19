@@ -70,8 +70,7 @@
         <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"></property>
     </bean>
     <!--注解扫描-->
-    <context:component-scan base-package="sys"/>
-    <context:component-scan base-package="resource"/>
+    <context:component-scan base-package="sys,resource"/>
 
 
     <!-- 启用缓存注解功能，这个是必须的，否则注解不会生效，另外，该注解一定要声明在spring主配置文件中才会生效 -->

@@ -3,6 +3,7 @@ package sys.model;
 import javax.persistence.*;
 import java.io.Serializable;
 
+
 @Entity
 @Table(name = "resources_role")
 public class ResourcesRoleKey implements Serializable{
@@ -11,18 +12,21 @@ public class ResourcesRoleKey implements Serializable{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    @Column(name = "rescId")
-    private Integer rescId;
 
-    @Column(name = "roleId")
-    private Integer roleId;
+    @Column(name ="resc_id")
+    private Integer resc_id;
+//    如果使用驼峰命名 rescId,那么在查询语句需要 resc_id as rescId,或者在resultMap中 将数据库column与model中property名称进行匹配
+//    @Column(name ="resc_id")  此注释只在 dao层去操作数据库的方向上，mybatis进行转换
 
-    public ResourcesRoleKey() {
+    @Column(name ="role_id")
+    private Integer role_id;
 
+    public Integer getRole_id() {
+        return role_id;
     }
-    public ResourcesRoleKey(Integer rescId, Integer roleId) {
-        this.rescId = rescId;
-        this.roleId = roleId;
+
+    public void setRole_id(Integer role_id) {
+        this.role_id = role_id;
     }
 
     public Integer getId() {
@@ -33,20 +37,11 @@ public class ResourcesRoleKey implements Serializable{
         this.id = id;
     }
 
-    public void setRescId(Integer rescId) {
-        this.rescId = rescId;
+    public Integer getResc_id() {
+        return resc_id;
     }
 
-    public void setRoleId(Integer roleId) {
-        this.roleId = roleId;
-    }
-
-    public Integer getRescId() {
-        return rescId;
-    }
-
-
-    public Integer getRoleId() {
-        return roleId;
+    public void setResc_id(Integer resc_id) {
+        this.resc_id = resc_id;
     }
 }

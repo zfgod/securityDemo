@@ -28,7 +28,7 @@
     </select>
     <select id="getSelect" resultType="Resources">
         <![CDATA[
-          SELECT id,name,level from resources
+          SELECT id,name,level from resources WHERE id != 0
         ]]>
     </select>
 

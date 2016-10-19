@@ -16,6 +16,9 @@
 	     注意：静态资源的放行,多层目录pattern匹配是/**/*.js 而不是/*.js 或者*.js
 	     多层目录/**
 	-->
+	<!-- 一些没必要加入权限资源的接口，给予放行-->
+	<http pattern="/*/letGo/*" security="none"/>
+
 
 	<!-- 登录相关-->
     <http pattern="/sys/commitLogin.do" security="none" />

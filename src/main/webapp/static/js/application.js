@@ -3,9 +3,10 @@
  * 系统应用 统一抽取配置
  */
 
-/* js请求参数提交contentType
+/** js请求参数提交contentType
  * 设置请求头信息并格式化参数
  * */
+//表单格式请求
 var configForm = {
     headers: {
         'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
@@ -15,9 +16,9 @@ var configForm = {
         return toBodyString(data);
     }
 };
-
+//json格式请求
 var configJson = {
-    headers: {
+    headers:  {
         'Content-Type': 'application/json;charset=UTF-8'
     },
     transformRequest: function (data) {
@@ -67,4 +68,14 @@ function judgeInt(num){
 //“^(-(([0-9]+\\.[0-9]*[1-9][0-9]*)|([0-9]*[1-9][0-9]*\\.[0-9]+)|([0-9]*[1-9][0-9]*)))$”　　//负浮点数
 //“^(-?\\d+)(\\.\\d+)?$”　　//浮点数
 }
+/**
+ * 获取地址栏内指定的参数
+ * @param name
+ * @returns {*|string}
+ */
+var getSearch = function (name) {
+    var reg = new RegExp('(?:^|&)' + name + '=([^&]*)(?:&|$)', 'i');
+    var s = decodeURI(location.search);//解决参数含有中文问题
+    return ((s.split('?')[1] || '').match(reg) || [])[1] || '';
+};
 

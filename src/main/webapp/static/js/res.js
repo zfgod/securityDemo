@@ -22,11 +22,11 @@ resListApp.filter('type_resType',function(){
     return function(input){
         switch (input){
             //数据为string,加单引号;为number 不加单引号
-            case '0':
-                return '菜单';
             case '1':
-                return '页面';
+                return '菜单';
             case '2':
+                return '页面';
+            case '3':
                 return '操作';
             default:
                 return '--';

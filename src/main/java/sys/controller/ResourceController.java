@@ -92,7 +92,12 @@ public class ResourceController extends BaseController{
         return result;
     }
 
-    @RequestMapping(value = "/resSelect",method = RequestMethod.GET)
+    /**
+     * @Description: 资源下拉获取: parentId
+     * @author: zf
+     * @Date:   2016/10/19
+     */
+    @RequestMapping(value = "/letGo/resSelect",method = RequestMethod.GET)
     @ResponseBody
     public Object resSelect(){
         JSONObject result = new JSONObject();
@@ -111,5 +116,24 @@ public class ResourceController extends BaseController{
         return result;
     }
 
+    @RequestMapping(value = "/resUpdate",method = RequestMethod.POST)
+    @ResponseBody
+    public Object resUpdate(@RequestBody Resources resources){
+        JSONObject result = new JSONObject();
+        try {
+           int i  = resourceService.updateRes(resources);
+            if(i==1){
+                result.put("code",200);
+                result.put("msg","修改成功！");
+            }else {
+                result.put("code",500);
+                result.put("msg","修改失败");
+            }
+        }catch (Exception e){
+            result.put("code",500);
+            result.put("msg","修改失败");
+        }
+        return result;
+    }
 
 }
