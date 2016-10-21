@@ -69,4 +69,20 @@ public class RoleService {
         }
         return false;
     }
+
+    /**
+     * 获取指定角色信息
+     * @param role
+     * @return
+     */
+    public Role getRole(Role role) {
+        if(role.getId()!=null){
+           return roleMapper.selectByPrimaryKey(role);
+        }
+        return null;
+    }
+
+    public int updateRole(Role role) {
+        return roleMapper.updateByPrimaryKeySelective(role);
+    }
 }

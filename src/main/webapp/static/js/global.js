@@ -10,7 +10,7 @@ var baseUrl = '//localhost:8082';
  * 系统资源访问路径  统一配置
  * resUrl.sys.toLogin
  * */
-    // 1.数据请求接口地址
+    // 1.http请求接口地址
 var resUrl = {
     //系统：登录页，登录提交
     sys: {
@@ -33,12 +33,15 @@ var resUrl = {
     role:{
         query:"/role/query.do",
         getResList:"/role/letGo/bindRoleRes.do",//角色关联权限获取
-        bindRes:"/role/bindRoleRes.do"
+        bindRes:"/role/bindRoleRes.do",
+        find:"/role/find.do",//查询指定角色信息
+        edit:"/role/update.do"
     }
 }
-   // 2.页面导航布局地址
+   // 2.window.location.href 页面导航布局地址
 var viewPath = {
     base:"/pages",
+    denied:"/denied.html",
     //系统：登录页，登录提交
     sys:{
         login:"/sys/login.html",

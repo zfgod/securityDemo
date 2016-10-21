@@ -20,13 +20,16 @@
 	<http pattern="/*/letGo/*" security="none"/>
 
 
-	<!-- 登录相关-->
+	<!-- 登录相关 -->
     <http pattern="/sys/commitLogin.do" security="none" />
     <http pattern="/sys/loginOut.do" security="none" />
 
 	<http use-expressions="true" auto-config="false"
-		  entry-point-ref="myAuthenticationEntryPoint" access-denied-page="/denied.html">
-
+		  entry-point-ref="myAuthenticationEntryPoint"
+		  access-denied-page="/denied.html">
+		<!-- access-denied-page 只对非js请求的拒绝可以跳转，
+		     如果是js请求被拒： response 会是拒绝页面的html代码块
+		     -->
         <intercept-url pattern="/*" access="isAuthenticated()" />
 
 

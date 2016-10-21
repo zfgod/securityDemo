@@ -34,20 +34,20 @@ CREATE TABLE `log` (
 DROP TABLE IF EXISTS `resources`;
 
 CREATE TABLE `resources` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(50) DEFAULT NULL,
-  `parentId` int(11) DEFAULT '0',
-  `resKey` varchar(50) DEFAULT NULL,
-  `type` varchar(10) DEFAULT NULL,
-  `resUrl` varchar(200) DEFAULT NULL,
-  `level` int(11) DEFAULT NULL,
-  `description` varchar(200) DEFAULT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `name` varchar(50) DEFAULT NULL COMMENT '资源名称',
+  `parentId` int(11) DEFAULT '0' COMMENT '上级资源id',
+  `resKey` varchar(50) DEFAULT NULL COMMENT '资源权限标示',
+  `type` varchar(10) DEFAULT NULL COMMENT '资源类型：1菜单2页面3操作',
+  `resUrl` varchar(200) DEFAULT NULL COMMENT '资源请求路径url',
+  `level` int(11) DEFAULT '0' COMMENT '资源等级：0 >1 > 2 >3',
+  `description` varchar(200) DEFAULT NULL COMMENT '描述',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8;
 
 /*Data for the table `resources` */
 
-insert  into `resources`(`id`,`name`,`parentId`,`resKey`,`type`,`resUrl`,`level`,`description`) values (0,'未定义资源',0,'sysUndefine','0','undefine',0,'未定义资源都转为获取此权限'),(1,'权限资源管理',0,'resManage','1','/resManage',1,'权限资源管理菜单'),(2,'权限资源查询',1,'resQuery','2','/resManage/resQuery.do',2,'权限资源查看'),(3,'权限资源添加',1,'resAdd','2','/resManage/resAdd.do',2,'权限资源添加'),(4,'权限资源获取',1,'resFind','2','/resManage/resFind.do',2,'获取单个权限资源信息'),(5,'用户管理',0,'userManage','1','userManage',1,'用户模块');
+insert  into `resources`(`id`,`name`,`parentId`,`resKey`,`type`,`resUrl`,`level`,`description`) values (0,'未定义资源',0,'sysUndefine','0','undefine',0,'未定义资源都转为获取此权限'),(1,'权限资源管理',0,'resManage','1','/resManage',1,'权限资源管理菜单'),(2,'权限资源查询',1,'resQuery','2','/resManage/resQuery.do',2,'权限资源查看'),(3,'权限资源添加',1,'resAdd','3','/resManage/resAdd.do',2,'权限资源添加'),(4,'权限资源获取',1,'resFind','3','/resManage/resFind.do',2,'获取单个权限资源信息'),(5,'用户管理',0,'userManage','1','userManage',1,'用户模块'),(7,'用户查询',5,'userQuery','2','/userManage/uQuery.do',2,'查询用户信息'),(8,'资源权限修改',1,'resUpdate','3','/resManage/resUpdate.do',2,'修改资源权限信息'),(9,'用户查看',5,'userFind','3','/userManage/uFind.do',2,'获取用户信息'),(10,'用户修改',5,'userUpdate','3','/userManage/userUpdate.do',2,'修改用户信息'),(11,'角色管理',0,'roleManage','1','roleManage',1,'角色管理菜单'),(12,'角色列表查询',11,'roleQuery','2','/role/query.do',2,'角色列表信息获取'),(13,'角色添加',11,'roleAdd','3','/role/add.do',2,'添加角色'),(14,'角色查看',11,'roleFind','3','/role/find.do',2,'查看指定角色信息'),(15,'角色修改',11,'roleUpdate','3','/role/update.do',2,'修改角色定义'),(16,'角色授权',11,'bindRoleRes','3','/role/bindRoleRes.do',2,'角色与权限的绑定');
 
 /*Table structure for table `resources_role` */
 
@@ -59,11 +59,11 @@ CREATE TABLE `resources_role` (
   `role_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `id` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8;
 
 /*Data for the table `resources_role` */
 
-insert  into `resources_role`(`id`,`resc_id`,`role_id`) values (1,1,1),(2,2,1),(3,3,1),(4,1000,1),(5,4,1);
+insert  into `resources_role`(`id`,`resc_id`,`role_id`) values (8,1,2),(9,2,2),(10,3,2),(11,4,2),(12,5,2),(22,1,1),(23,2,1),(24,3,1),(25,5,1),(26,4,1),(27,16,1),(28,12,1),(29,14,1),(30,13,1),(31,15,1);
 
 /*Table structure for table `role` */
 
@@ -71,16 +71,16 @@ DROP TABLE IF EXISTS `role`;
 
 CREATE TABLE `role` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(50) DEFAULT NULL,
-  `roleKey` varchar(50) DEFAULT NULL,
-  `description` varchar(200) DEFAULT NULL,
-  `enable` int(11) DEFAULT NULL,
+  `name` varchar(50) DEFAULT NULL COMMENT '角色名称',
+  `roleKey` varchar(50) DEFAULT NULL COMMENT '角色标志',
+  `description` varchar(200) DEFAULT NULL COMMENT '描述',
+  `enable` int(11) DEFAULT '1' COMMENT '1=可用，0不可用，-1删除',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 /*Data for the table `role` */
 
-insert  into `role`(`id`,`name`,`roleKey`,`description`,`enable`) values (1,'超级管理员','ROLE_USER','admin',1);
+insert  into `role`(`id`,`name`,`roleKey`,`description`,`enable`) values (1,'超级管理员1','ROLE_USER','admin',1);
 
 /*Table structure for table `serverinfo` */
 

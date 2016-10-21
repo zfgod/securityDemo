@@ -1,9 +1,9 @@
 /**
  * Created by Administrator on 2016/10/14.
+ * 系统登录、登出
  */
-var sysApp = angular.module("SysApp",[])
 
-sysApp.controller('LoginCtrl', ['$rootScope','$scope','$http',
+secDemoApp.controller('LoginCtrl', ['$rootScope','$scope','$http',
     function($rootScope,$scope,$http){
         $scope.showError = 0;
         //$scope.pwdType = "password";

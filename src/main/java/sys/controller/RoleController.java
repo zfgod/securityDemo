@@ -82,5 +82,54 @@ public class RoleController extends BaseController{
         return result;
     }
 
+    /**
+     * 获取指定角色信息
+     * @param role  id必须有
+     * @return
+     */
+    @RequestMapping(value = "/find.do",method = RequestMethod.GET)
+    @ResponseBody
+    private Object getRole(Role role){
+        JSONObject result = new JSONObject();
+        try{
+             Role r = roleService.getRole(role);
+            if(r!=null){
+                result.put("code",200);
+                result.put("role",r);
+            }else {
+                result.put("code",404);
+                result.put("msg","没有找到");
+            }
+        }catch (Exception e){
+            result.put("code",500);
+            result.put("msg","获取失败！");
+        }
+        return result;
+    }
+
+    /***
+     * 更新角色信息
+     * @param role
+     * @return
+     */
+    @RequestMapping(value = "/update.do",method = RequestMethod.POST)
+    @ResponseBody
+    private Object editRole(@RequestBody Role role){
+        JSONObject result = new JSONObject();
+        try{
+            int i  = roleService.updateRole(role);
+            if(i==1){
+                result.put("code",200);
+                result.put("msg","更新成功");
+            }else {
+                result.put("code",500);
+                result.put("msg","更新失败");
+            }
+        }catch (Exception e){
+            result.put("code",500);
+            result.put("msg","获取失败！");
+        }
+        return result;
+    }
 
 }

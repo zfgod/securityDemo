@@ -11,14 +11,8 @@ var resTypeSelect = [
     {name: '操作',id:3}
 ];
 
-
-
-/**列表页面
- * */
-var resListApp = angular.module("ResListApp",[]);
-
 //资源类型匹配
-resListApp.filter('type_resType',function(){
+secDemoApp.filter('type_resType',function(){
     return function(input){
         switch (input){
             //数据为string,加单引号;为number 不加单引号
@@ -33,7 +27,23 @@ resListApp.filter('type_resType',function(){
         }
     }
 });
-resListApp.controller('ResListCtrl',['$scope','$http',
+
+//资源上级下拉选择
+secDemoApp.factory('resourceService', ['$http',
+    function($http) {
+        return {
+            //上级资源下拉获取
+            resParentList:function (){
+                var select = baseUrl + resUrl.resources.resSelect;
+                return $http.get(select);
+            }
+        }
+    }
+]);
+
+/**列表页面
+ * */
+secDemoApp.controller('ResListCtrl',['$scope','$http',
     function($scope,$http){
         var url = baseUrl+resUrl.resources.query;
         //页面加载完成，请求资源数据
@@ -56,10 +66,9 @@ resListApp.controller('ResListCtrl',['$scope','$http',
 
 /** 编辑页面
  * */
-var resEditApp = angular.module("ResEditApp",[]);
 
-resEditApp.controller('ResEditCtrl',['$scope','$http',
-    function($scope,$http){
+secDemoApp.controller('ResEditCtrl', ['$scope','$http','resourceService',
+    function($scope,$http,resourceService){
         $scope.resTypeSelect = resTypeSelect;
         var id = parseInt(getSearch("id"));
         if(id && judgeInt(id)){
@@ -68,14 +77,12 @@ resEditApp.controller('ResEditCtrl',['$scope','$http',
                 .success(function(data){
                     if(data.code == 200){
                         $scope.res = data.res;
-
                     }
                 })
                 .error(function(){
                    console.log("error");
                 });
-            var select =baseUrl+resUrl.resources.resSelect;
-            $http.get(select)
+            resourceService.resParentList()
                 .success(function(data){
                     if(data.code == 200){
                         $scope.pSelect = data.resList;
@@ -89,10 +96,10 @@ resEditApp.controller('ResEditCtrl',['$scope','$http',
             var url = baseUrl+resUrl.resources.edit;
             $http.post(url,query,configJson)
                 .success(function(data){
-
-                }).error(function(){
-
-                });
+                    if(data.code == 200){
+                        alert(data.msg);
+                    }
+                })
         }
     }
 ]);
@@ -100,10 +107,10 @@ resEditApp.controller('ResEditCtrl',['$scope','$http',
 /**
  * 添加页面
  * */
-var resAddApp = angular.module("ResAddApp",[]);
 
-resAddApp.controller('ResAddCtrl',['$scope','$http',
-    function($scope,$http){
+
+secDemoApp.controller('ResAddCtrl',['$scope','$http','resourceService',
+    function($scope,$http,resourceService){
         $scope.resTypeSelect = resTypeSelect;
         var select =baseUrl+resUrl.resources.resSelect;
         $http.get(select)
@@ -114,6 +121,15 @@ resAddApp.controller('ResAddCtrl',['$scope','$http',
             }).error(function(){
                 console.log("error");
             });
+        resourceService.resParentList()
+            .success(function(data){
+               if(data.code == 200){
+                $scope.pSelect = data.resList;
+               }
+            }).error(function(){
+              console.log("error");
+            });
+
         $scope.addRes=function(query){
             var url = baseUrl+resUrl.resources.add;
             $http.post(url,query,configJson)

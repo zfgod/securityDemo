@@ -1,10 +1,8 @@
 /**
  * Created by Administrator on 2016/10/19.
  */
-var roleApp = angular.module("RoleApp",[]);
-
 //角色启用状态显示
-roleApp.filter('type_enable',function(){
+secDemoApp.filter('type_enable',function(){
     return function(input){
         switch (input){
             case 1:
@@ -21,7 +19,7 @@ roleApp.filter('type_enable',function(){
 /**
  *  角色列表
  */
-roleApp.controller("RoleListCtrl",['$scope','$http',
+secDemoApp.controller("RoleListCtrl",['$scope','$http',
     function($scope,$http){
         var url = baseUrl + resUrl.role.query;
         var query = '';
@@ -42,7 +40,7 @@ roleApp.controller("RoleListCtrl",['$scope','$http',
 /**
  * 角色授权
  */
-roleApp.controller("BindResCtrl",['$scope','$http',
+secDemoApp.controller("BindResCtrl",['$scope','$http',
     function($scope,$http){
         $scope.roleRes = [];//已绑定权限数组
         //从发起的链接中获取角色id和名称
@@ -101,5 +99,40 @@ roleApp.controller("BindResCtrl",['$scope','$http',
             var action = (checkbox.checked ? 'add':'remove');
             updateSelected(action,id);
         };
+    }
+]);
+
+/**
+ *  角色修改
+ */
+secDemoApp.controller('RoleEditCtrl',['$scope','$http',
+    function($scope,$http){
+        var id = parseInt(getSearch("id"));
+        if(id){
+            var url = baseUrl+resUrl.role.find+"?id="+id;
+            $http.get(url)
+                .success(function(data){
+                    if(data.code == 200){
+                        $scope.role = data.role;
+                    }
+                }).error(function(response){
+                    alert("服务器响应状态值:"+response.status);
+                    //加载页面内容
+                    document.write(response);
+                });
+        }
+        $scope.editRole = function (query) {
+            var url = baseUrl+resUrl.role.edit;
+            $http.post(url,query,configJson)
+                .success(function(data){
+                    if(data.code == 200){
+                        alert(data.msg);
+                    }
+                }).error(function(response){
+                    alert("服务器响应状态值:"+response.status);
+                    //加载页面内容
+                    document.write(response);
+                });
+        }
     }
 ]);
