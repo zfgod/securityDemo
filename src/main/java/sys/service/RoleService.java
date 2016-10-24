@@ -85,4 +85,14 @@ public class RoleService {
     public int updateRole(Role role) {
         return roleMapper.updateByPrimaryKeySelective(role);
     }
+
+    public int addRole(Role role) {
+        return roleMapper.insertSelective(role);
+    }
+
+    public List<Role> findAllRoles() {
+        Role r = new Role();
+        r.setEnable(1);
+        return roleMapper.select(r);
+    }
 }

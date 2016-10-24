@@ -10,8 +10,10 @@
     <script src="/static/js/res.js"></script>
 </head>
 <body >
-
    <div><center>资源列表</center></div>
+   <div>
+       <a href="/pages/sys/main.html">返回主页</a>
+   </div>
    <div><a href="/pages/resource/add.html">添加资源</a></div>
    <div ng-controller="ResListCtrl">
        <div ng-show="dataSize > 0">
@@ -33,6 +35,7 @@
                    <td>{{res.name}}</td>
                    <td>{{res.resKey}}</td>
                    <td>{{res.type | type_resType}}</td>
+                   <td>{{res.resUrl}}</td>
                    <td>{{res.description}}</td>
                    <td><a href="/pages/resource/edit.html?id={{res.id}}">修改</a></td>
                </tr>

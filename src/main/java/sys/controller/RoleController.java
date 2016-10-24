@@ -41,6 +41,27 @@ public class RoleController extends BaseController{
         return result;
     }
 
+    @RequestMapping(value = "/add.do",method = RequestMethod.POST)
+    @ResponseBody
+    private Object addRoles(@RequestBody Role role){
+        JSONObject result = new JSONObject();
+        try{
+            int i  = roleService.addRole(role);
+            if(i == 1){
+                result.put("code",200);
+                result.put("msg","添加角色成功！");
+            }else {
+                result.put("code",500);
+                result.put("msg","添加角色失败！");
+            }
+        }catch (Exception e){
+            result.put("code",500);
+            result.put("msg","添加角色失败！");
+        }
+        return result;
+    }
+
+
     /**
      * @Description: 查看角色-权限绑定信息
      * @author: zf

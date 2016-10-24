@@ -5,6 +5,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
+
 @Entity
 @Table(name="user")
 public class User implements Serializable{
@@ -35,6 +37,8 @@ public class User implements Serializable{
 
     @Column(name = "status")
     private String status;
+    @Transient
+    private List<Integer> roleList;
 
     public User() {
     }
@@ -51,6 +55,14 @@ public class User implements Serializable{
                 ", regTime=" + regTime +
                 ", status='" + status + '\'' +
                 '}';
+    }
+
+    public List<Integer> getRoleList() {
+        return roleList;
+    }
+
+    public void setRoleList(List<Integer> roleList) {
+        this.roleList = roleList;
     }
 
     public Integer getUserId() {

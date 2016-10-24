@@ -1,5 +1,6 @@
 /**
  * Created by Administrator on 2016/10/19.
+ * 角色管理
  */
 //角色启用状态显示
 secDemoApp.filter('type_enable',function(){
@@ -16,10 +17,32 @@ secDemoApp.filter('type_enable',function(){
         }
     }
 });
+
+/**
+ * 角色添加
+ */
+secDemoApp.controller('RoleAddCtrl',['$scope','$http',
+    function($scope,$http){
+        var url = baseUrl + resUrl.role.add;
+        $scope.addRole = function(query){
+            $http.post(url,query,configJson)
+                .success(function (data) {
+                if(data.code == 200){
+                    alert(data.msg);
+                }else if(data.code == 500 ){
+                    alert(data.msg);
+                }
+            })
+        }
+
+    }
+
+]);
+
 /**
  *  角色列表
  */
-secDemoApp.controller("RoleListCtrl",['$scope','$http',
+secDemoApp.controller('RoleListCtrl',['$scope','$http',
     function($scope,$http){
         var url = baseUrl + resUrl.role.query;
         var query = '';

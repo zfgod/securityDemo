@@ -15,7 +15,6 @@ secDemoApp.controller('LoginCtrl', ['$rootScope','$scope','$http',
            $http.post(url,query,configJson)
                .success(function (data) {
                    if(data.code == 200){
-                       alert(data.msg);
                        window.location.href = baseUrl+viewPath.base+viewPath.sys.main;
                    }else if(data.code == 500){
                        $scope.loginError = data.loginError;

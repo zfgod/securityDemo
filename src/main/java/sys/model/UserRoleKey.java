@@ -13,25 +13,36 @@ public class UserRoleKey implements Serializable{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(name="userId")
-    private Long userId;
+    @Column(name="user_id")
+    private Long user_id;
 
-    @Column(name="roleId")
-    private Long roleId;
+    @Column(name="role_id")
+    private Long role_id;
 
-
-    public UserRoleKey(Long userId, Long roleId) {
-        this.userId = userId;
-        this.roleId = roleId;
+    public UserRoleKey() {
     }
 
-
-    public Long getUserId() {
-        return userId;
+    public Integer getId() {
+        return id;
     }
 
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
-    public Long getRoleId() {
-        return roleId;
+    public Long getUser_id() {
+        return user_id;
+    }
+
+    public void setUser_id(Long user_id) {
+        this.user_id = user_id;
+    }
+
+    public Long getRole_id() {
+        return role_id;
+    }
+
+    public void setRole_id(Long role_id) {
+        this.role_id = role_id;
     }
 }

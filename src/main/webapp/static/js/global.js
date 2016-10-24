@@ -2,7 +2,7 @@
  * Created by Administrator on 2016/10/14.
  * 系统参数  统一配置
  */
-var baseUrl = '//localhost:8082';
+var baseUrl = '//localhost:8081';
 
 
 
@@ -20,14 +20,16 @@ var resUrl = {
     },
     //用户管理：
     users:{
-
+        query:"/user/query.do",
+        selectRole:"/user/letGo/rSelect.do",
+        bindRole:"/user/bindRole.do"
     },
     //资源管理：
     resources:{
         query:"/resManage/resQuery.do",
         add:"/resManage/resAdd.do",
         find:"/resManage/resFind.do",
-        edit:"/resManage/resEdit.do",
+        edit:"/resManage/resUpdate.do",
         resSelect:"/resManage/letGo/resSelect.do"},
     //角色管理
     role:{
@@ -35,7 +37,8 @@ var resUrl = {
         getResList:"/role/letGo/bindRoleRes.do",//角色关联权限获取
         bindRes:"/role/bindRoleRes.do",
         find:"/role/find.do",//查询指定角色信息
-        edit:"/role/update.do"
+        edit:"/role/update.do",
+        add:"/role/add.do"
     }
 }
    // 2.window.location.href 页面导航布局地址
