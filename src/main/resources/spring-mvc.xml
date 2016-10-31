@@ -15,7 +15,15 @@
     <mvc:annotation-driven>
         <mvc:message-converters register-defaults="true">
             <bean class="org.springframework.http.converter.StringHttpMessageConverter">
-                <property name="supportedMediaTypes" value="text/html;charset=UTF-8"/>
+                <property name="supportedMediaTypes">
+                    <list>
+                        <!-- 这里顺序不能反，一定先写text/html,不然ie下出现下载提示 -->
+                        <value>text/html;charset=UTF-8</value>
+                        <!-- 支持sse -->
+                        <value>text/event-stream;charset=UTF-8</value>
+                        <!--<value>application/json;charset=UTF-8</value>-->
+                    </list>
+                </property>
             </bean>
             <!-- json的解析-->
             <bean id="fastJsonHttpMessageConverter" class="com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter">
@@ -23,6 +31,7 @@
                     <list>
                         <!-- 这里顺序不能反，一定先写text/html,不然ie下出现下载提示 -->
                         <value>text/html;charset=UTF-8</value>
+                        <value>text/event-stream;charset=UTF-8</value>
                         <value>application/json;charset=UTF-8</value>
                     </list>
                 </property>

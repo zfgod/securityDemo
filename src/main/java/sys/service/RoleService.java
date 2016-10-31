@@ -12,7 +12,9 @@ import sys.model.ResourcesRoleKey;
 import sys.model.Role;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 /**
  * author: zf
@@ -94,5 +96,10 @@ public class RoleService {
         Role r = new Role();
         r.setEnable(1);
         return roleMapper.select(r);
+    }
+
+    public List<Integer> getUsersUseRole(Set<Integer> updateRoles) {
+        List<Integer> roles = new ArrayList<Integer>(updateRoles);
+        return roleMapper.getUsersUseRole(roles);
     }
 }

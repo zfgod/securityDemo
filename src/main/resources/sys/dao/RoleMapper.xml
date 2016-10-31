@@ -18,5 +18,14 @@
     </select>
 
 
+    <select id="getUsersUseRole"  resultType="int" parameterType="List">
 
+          SELECT DISTINCT user_id
+          FROM user_role
+          WHERE role_id IN
+          <foreach collection="list" open="(" close=")" index="index" item="item">
+              #{item}
+          </foreach>
+
+    </select>
 </mapper>

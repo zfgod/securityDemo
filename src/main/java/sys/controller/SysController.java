@@ -17,7 +17,7 @@ import sys.model.User;
 import sys.service.UserService;
 import sys.utils.ParamsUtils;
 
-import javax.servlet.http.HttpSession;
+
 
 /**
  * author: zf
@@ -31,7 +31,9 @@ public class SysController extends BaseController{
     private UserService userService;
     @Autowired
     private AuthenticationManager myAuthenticationManager;
-    /**
+
+
+                /**
      * @Description: 访问登录页面
      * @author: zf
      * @Date:   2016/10/13
@@ -61,10 +63,10 @@ public class SysController extends BaseController{
                            new UsernamePasswordAuthenticationToken(hasUser.getUserName(),hasUser.getUserPassword()));
            SecurityContext securityContext = SecurityContextHolder.getContext();
            securityContext.setAuthentication(authentication);
-           HttpSession session = request.getSession(true);
            session.setAttribute(ParamsUtils.user_security_sedssin, securityContext);
                    // 当验证都通过后，把用户信息放在session里
-                   request.getSession().setAttribute(ParamsUtils.user_sessin, hasUser);
+           request.getSession().setAttribute(ParamsUtils.user_sessin, hasUser);
+           addUserInServer(hasUser);
            result.put("code", 200);
            result.put("msg","登录成功！");
            return  result;
@@ -74,6 +76,9 @@ public class SysController extends BaseController{
        }
        return  result;
     }
+
+
+
     /**
      * @Description: 访问主页
      * @author: zf

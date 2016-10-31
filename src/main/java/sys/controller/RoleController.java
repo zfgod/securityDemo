@@ -24,7 +24,8 @@ import java.util.List;
 public class RoleController extends BaseController{
     @Autowired
     private RoleService roleService;
-
+    @Autowired
+    private SSEController sseController;
 
     @RequestMapping(value = "/query.do")
     @ResponseBody
@@ -93,6 +94,7 @@ public class RoleController extends BaseController{
         try{
             boolean b = roleService.updateBindRoleRes(role);
             if(b){
+                addRemindInServlet(role);
                 result.put("code",200);
                 result.put("msg","授权成功！");
             }
