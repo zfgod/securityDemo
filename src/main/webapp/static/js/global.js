@@ -53,7 +53,8 @@ var viewPath = {
     },
     //用户管理：
     users:{
-
+       list:"/user/list.html",
+       bind:"/user/bind.html"
     },
     //资源管理：
     resources:{

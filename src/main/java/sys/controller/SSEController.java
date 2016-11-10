@@ -19,7 +19,7 @@ import java.util.*;
  * 如果需要把这个角色权限修改后通知客户端做重新登录完善，
  * servletContext： 登录用户的Set,有做更新的角色Set.角色对应需要通知的用户，基于此
  *  更新考虑建表处理数据，存入servletContext不合理
- *  如果有没关系性缓存 如redis，则使用redis存储
+ *  如果有非关系性缓存 如redis，则使用redis存储
  */
 @Controller
 @RequestMapping("/sse")

@@ -111,7 +111,7 @@ secDemoApp.factory("InterceptorHttp", [function () {
         },
         request: function (request) {
             //前端请求发起,处理request后再请求服务器
-            return request
+            return request;
         },
         response: function (response) {
             //服务器响应请求成功：请求进入方法 server status =200
