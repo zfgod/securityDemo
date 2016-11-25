@@ -2,7 +2,7 @@
 SQLyog Ultimate v12.09 (64 bit)
 MySQL - 5.6.22-log : Database - secdemo
 *********************************************************************
-*/
+*/
 
 /*!40101 SET NAMES utf8 */;
 

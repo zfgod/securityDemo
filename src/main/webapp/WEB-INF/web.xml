@@ -8,8 +8,8 @@
     </listener>
     <context-param>
         <param-name>contextConfigLocation</param-name>
-        <param-value>classpath:applicationContext.xml,classpath:spring-security.xml</param-value>
-        <!--<param-value>classpath:applicationContext.xml</param-value>-->
+        <param-value>classpath:applicationContext.xml,classpath:spring-security.xml,
+            classpath:spring-scheduler.xml</param-value>
     </context-param>
 
     <!--&lt;!&ndash; 跨域&ndash;&gt;-->

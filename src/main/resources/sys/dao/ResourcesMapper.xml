@@ -19,7 +19,7 @@
 	            FROM user_role
 	            WHERE user_id = (
 		          SELECT userId
-		          FROM USER
+		          FROM  user
 		          WHERE userName = #{VALUE}
 	            )
 	          )

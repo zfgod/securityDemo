@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:task="http://www.springframework.org/schema/task"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+	http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-3.0.xsd">
+	<!-- 定义任务bean -->
+	<bean id="testJobClass" class="sys.job.TestJobClass"
+		  scope="singleton">
+	</bean>
+	<bean name="updateMoneyJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean"
+		  scope="singleton">
+		<property name="targetObject"  ref="testJobClass"/>
+		<property name="targetMethod" value="testJob"/>
+	</bean>
+
+	<!-- 定义触发器 -->
+	<bean id="cronTrigger_1" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="updateMoneyJob" />
+		<!-- 执行定义： 每隔5分钟触发一次 -->
+		<property name="cronExpression" value="0 0/2 * * * ?" />
+	</bean>
+
+	<!-- 定义调度器 -->
+	<bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+	    <property name="triggers">
+	        <list>
+	            <ref bean="cronTrigger_1" />
+	        </list>
+	    </property>
+	</bean>
+
+
+</beans>
