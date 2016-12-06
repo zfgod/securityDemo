@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.sec.demo</groupId>
-    <artifactId>parent</artifactId>
+    <artifactId>sec</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>war</packaging>
     <properties>
@@ -27,10 +27,27 @@
             <name>clojars Repository</name>
             <url>http://clojars.org/repo/</url>
         </repository>
+        <!--<repository>-->
+            <!--<id>oschina</id>-->
+            <!--<name>oschina Repository</name>-->
+            <!--<url>https://maven.oschina.NET/content/groups/public</url>-->
+        <!--</repository>-->
         <repository>
-            <id>oschina</id>
-            <name>oschina Repository</name>
-            <url>https://maven.oschina.NET/content/groups/public</url>
+            <id>nexus</id>
+            <name>Human Readable Name for this Mirror.</name>
+            <layout>default</layout>
+            <url>http://192.168.100.11:8081/nexus/content/groups/public/</url>
+        </repository>
+        <repository>
+            <id>cen</id>
+            <name>c Repository</name>
+            <url>http://central.maven.org/maven2</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
         </repository>
         <!-- 中央仓库 -->
         <repository>
@@ -338,7 +355,15 @@
             <type>jar</type>
             <scope>compile</scope>
         </dependency>
-             <!-- 邮件发送-->
+        <!-- 邮件发送-->
+
+        <!-- 定时任务-->
+        <dependency>
+            <groupId>org.quartz-scheduler</groupId>
+            <artifactId>quartz</artifactId>
+            <version>2.2.1</version>
+        </dependency>
+
         <!--junit4-->
         <dependency>
             <groupId>junit</groupId>
@@ -346,10 +371,29 @@
             <version>4.11</version>
             <scope>test</scope>
         </dependency>
+        <!-- jms , activeMQ , xbean-->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-jms</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.activemq</groupId>
+            <artifactId>activemq-all</artifactId>
+            <version>5.7.0</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.apache.xbean/xbean-spring -->
+        <dependency>
+            <groupId>org.apache.xbean</groupId>
+            <artifactId>xbean-spring</artifactId>
+            <version>4.5</version>
+        </dependency>
+        <!-- jms , activeMQ , xbean-->
+
     </dependencies>
 
     <build>
-        <finalName>secDemo</finalName>
+        <finalName>sec</finalName>
         <plugins>
             <!-- 编译 -->
            <!-- <plugin>

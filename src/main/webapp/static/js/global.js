@@ -2,8 +2,8 @@
  * Created by Administrator on 2016/10/14.
  * 系统参数  统一配置
  */
-//var baseUrl = '//localhost:8081';
-var baseUrl = '//180.97.75.134:8094';
+var baseUrl = '//localhost:8081';
+//var baseUrl = '//180.97.75.134:8094';
 
 
 /**

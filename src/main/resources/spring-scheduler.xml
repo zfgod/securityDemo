@@ -17,7 +17,7 @@
 	<bean id="cronTrigger_1" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
 		<property name="jobDetail" ref="updateMoneyJob" />
 		<!-- 执行定义： 每隔5分钟触发一次 -->
-		<property name="cronExpression" value="0 0/2 * * * ?" />
+		<property name="cronExpression" value="0 0/10 * * * ?" />
 	</bean>
 
 	<!-- 定义调度器 -->
