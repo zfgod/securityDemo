@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import sys.amq.productor.QueueProductor1;
+import sys.amq.productor.QueueProductor2;
 import sys.amq.productor.TopicProductor1;
 
 import javax.annotation.Resource;
@@ -19,7 +20,9 @@ import javax.annotation.Resource;
 public class ActivemqController {
 	
 	@Resource
-	QueueProductor1 queueSender;
+	QueueProductor1 queueSender1;
+	@Resource
+	QueueProductor2 queueSender2;
 	@Resource
 	TopicProductor1 topicSender;
 	
@@ -31,10 +34,11 @@ public class ActivemqController {
 	 */
 	@ResponseBody
 	@RequestMapping("/letGo/queueSender")
-	public String queueSender(@RequestParam("message")String message){
+	public String queueSender(@RequestParam("name")String name,
+							  @RequestParam("message")String message){
 		String opt="";
 		try {
-			queueSender.send("test.queue", message);
+			queueSender1.sendQueueMsg(name, message);
 			opt = "suc";
 		} catch (Exception e) {
 			opt = e.getCause().toString();

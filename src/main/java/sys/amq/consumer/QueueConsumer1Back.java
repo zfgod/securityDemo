@@ -1,7 +1,5 @@
 package sys.amq.consumer;
 
-import org.apache.activemq.spring.ActiveMQConnectionFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jms.listener.SessionAwareMessageListener;
 import org.springframework.stereotype.Component;
 
@@ -13,12 +11,8 @@ import javax.jms.*;
  * Description:队列式消息接收者
  */
 @Component
-public class QueueConsumer1 implements SessionAwareMessageListener<Message> {
+public class QueueConsumer1Back implements SessionAwareMessageListener<Message> {
 
-    @Autowired
-    private ActiveMQConnectionFactory connectionFactory;
-
-    private Destination destination;//消息返回目的地
     @Override
     public void onMessage(Message message,Session session) {
         try {
@@ -27,11 +21,9 @@ public class QueueConsumer1 implements SessionAwareMessageListener<Message> {
                 System.out.println("消息内容是：" + ((TextMessage) message).getText());
                 int acknowledgeMode = session.getAcknowledgeMode();
                 boolean transacted = session.getTransacted();
-                MessageProducer producer = session.createProducer(destination);
-                TextMessage textMessage = session.createTextMessage("接收成功！");
-                producer.setDeliveryMode(DeliveryMode.NON_PERSISTENT);//非持久化
-                producer.send(textMessage);
-                message.acknowledge();
+                session.rollback();
+//                session.
+                System.out.println("未手动确认消息");
             } else {
                 System.out.println("Consumer:->Received: " + message);
             }
@@ -40,11 +32,4 @@ public class QueueConsumer1 implements SessionAwareMessageListener<Message> {
         }
     }
 
-    public Destination getDestination() {
-        return destination;
-    }
-
-    public void setDestination(Destination destination) {
-        this.destination = destination;
-    }
 }

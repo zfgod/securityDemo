@@ -14,9 +14,11 @@ import javax.jms.TextMessage;
  */
 @Component
 public class QueueConsumer2 implements MessageListener{
+
     @Override
     public void onMessage(Message message) {
         try {
+//            int i =1/0;
             System.out.println("queueReceiver2接收到消息:"+((TextMessage)message).getText());
         } catch (JMSException e) {
             e.printStackTrace();

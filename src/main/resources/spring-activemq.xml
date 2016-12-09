@@ -57,34 +57,61 @@
       <!--&lt;!&ndash; 监听注解支持 &ndash;&gt;-->
       <!--<bean id="jmsListenerContainerFactory" class="org.springframework.jms.config.DefaultJmsListenerContainerFactory">-->
         <!--<property name="connectionFactory" ref="connectionFactory"/>-->
-      <!--</bean>-->
-
+    <!--</bean>-->
 
        <!--Spring JmsTemplate 的消息生产者 end-->
 
 
        <!-- 消息消费者 start-->
 
-       <!-- xml定义Queue监听器 -->
-
-       <jms:listener-container destination-type="queue" container-type="default"
-                               connection-factory="connectionFactory" acknowledge="auto"
-                                concurrency="5-10">
-              <!--<jms:listener destination="test.queue" ref="queueConsumer1"/>-->
+    <!-- xml定义Queue监听器 -->
+    <jms:listener-container destination-type="queue" container-type="default"
+                               connection-factory="connectionFactory" acknowledge="client"
+                                concurrency="1">
+              <jms:listener destination="myqueue1Success2" ref="queueConsumer1Back"/>
               <jms:listener destination="test.queue" ref="queueConsumer2"/>
        </jms:listener-container>
 
-       <!-- xml定义Topic监听器 -->
+    <!-- xml定义Topic监听器 -->
        <jms:listener-container destination-type="topic" container-type="default"
                                connection-factory="connectionFactory" acknowledge="auto"
-                               concurrency="5-10">
+                               concurrency="1">
               <!--<jms:listener destination="test.topic" ref="topicConsumer1"/>-->
               <jms:listener destination="test.topic" ref="topicConsumer2"/>
        </jms:listener-container>
 
-       <!-- 消息消费者 end -->
+    <!-- 消息消费者 end -->
 
-     <!-- 改为注解式监听-->
+     <!--自定义监听 -->
 
+    <!--这个是QueueConsumer1点对点队列目的地-->
+    <bean id="queueDestination" class="org.apache.activemq.command.ActiveMQQueue">
+        <!-- 构造方法注入点对点监听地址-->
+        <constructor-arg>
+            <value>myqueue1</value>
+        </constructor-arg>
+    </bean>
+    <!--这个是QueueConsumer1点对点队列消息成功接收返回目的地-->
+    <bean id="queueDestinationBack" class="org.apache.activemq.command.ActiveMQQueue">
+        <!-- 注入点对点监听地址-->
+        <constructor-arg>
+            <value>myqueue1Success2</value>
+        </constructor-arg>
+    </bean>
+    <bean id="myConsumerListener1" class="sys.amq.consumer.QueueConsumer1">
+        <!-- 不直接写name,而是引入对象Destination,方便区分queue和topic-->
+        <property name="destination" ref="queueDestinationBack"/>
+    </bean>
+    <!-- 监听容器-->
+    <bean id="myListenerContainer"
 
+          class="org.springframework.jms.listener.DefaultMessageListenerContainer">
+        <property name="connectionFactory" ref="connectionFactory" />
+        <!-- 消息监听地址-->
+        <property name="destination" ref="queueDestination" />
+
+        <property name="sessionAcknowledgeMode" value="2"></property>
+        <!-- 监听指定 -->
+        <property name="messageListener" ref="myConsumerListener1" />
+    </bean>
 </beans>

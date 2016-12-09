@@ -30,6 +30,7 @@ public class QueueProductor2 {
         jmsTemplate.send(queueName, new MessageCreator() {
             @Override
             public Message createMessage(Session session) throws JMSException {
+
                 return session.createTextMessage(message);
             }
         });

@@ -17,6 +17,7 @@
         <list>
             <value>classpath:config.properties</value>
             <value>classpath:jdbc.properties</value>
+            <value>classpath:config/msg.properties</value>
         </list>
     </property>
    </bean>

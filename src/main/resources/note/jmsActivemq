@@ -1,0 +1,30 @@
+ jms    消息队列 activeMQ
+            spring        队列和订阅模式  单系统实现
+            springboot 队列和订阅模式 单系统实现
+            spring 与 springboot 两系统之间  跨系统实现
+            队列和订阅模式 的 消息扩展：消息体分析，多种消息体数据结构
+            队列和订阅模式 的 消息session，activemq在消息的消费过程的内部处理 及 消亡
+            连接工厂、消息处理器、jmsTemplate两种类型配置、监听器的配置
+            订阅式消息的重复性问题解决。。消息生成监听的参数配置学习
+            模拟两种形式的业务场景 ：业务满足时的调用，定时任务型消息发送
+                                一并学习处理消息发送及消息接收的 事务问题
+            消息持久化的由来及应用场景，实现
+            消息队列实际运用
+消息监听：
+    The number of concurrent sessions/consumers to start for each listener.
+   	Can either be a simple number indicating the maximum number (e.g. "5")
+   	or a range indicating the lower as well as the upper limit (e.g. "3-5").
+   	Note that a specified minimum is just a hint and might be ignored at runtime.
+   	Default is 1; keep concurrency limited to 1 in case of a topic listener
+   	or if message ordering is important; consider raising it for general queues.
+    订阅式消息监听保证并发数为1,只进行一次监听
+   	点对点是监听可以配置并发,但是当一个监听成功时,需告知已接收,避免重复监听
+    消息onMessage执行过程有异常,照样会返回messageReceived=true,此消息被消费完毕
+acknowledge:告知模式
+    AUTO_ACKNOWLEDGE = 1    自动确认
+    CLIENT_ACKNOWLEDGE = 2    客户端手动确认
+    DUPS_OK_ACKNOWLEDGE = 3    自动批量确认
+    SESSION_TRANSACTED = 0    事务提交并确认
+    此外AcitveMQ补充了一个自定义的ACK_MODE:
+    INDIVIDUAL_ACKNOWLEDGE = 4    单条消息确认
+
