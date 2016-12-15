@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans  xmlns="http://www.springframework.org/schema/beans"
+        xmlns:context="http://www.springframework.org/schema/context"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:amq="http://activemq.apache.org/schema/core"
+        xmlns:jms="http://www.springframework.org/schema/jms"
+        xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context-3.2.xsd
+        http://www.springframework.org/schema/jms
+        http://www.springframework.org/schema/jms/spring-jms-4.0.xsd
+        http://activemq.apache.org/schema/core
+         http://activemq.apache.org/schema/core/activemq-core-5.8.0.xsd">
+         <!-- 扩展配置-->
+
+       <!-- 也可使用org.apache.activemq.spring.ActiveMQConnectionFactory，类中注入类相应改动-->
+    <bean id="amqConnectionFactory" class="org.apache.activemq.ActiveMQConnectionFactory">
+        <property name="brokerURL" value="${jms.broker.url}"/>
+        <property name="userName" value="${jms.broker.username}"/>
+        <property name="password" value="${jms.broker.password}"/>
+        <property name="useAsyncSend" value="true"/>
+        <property name="trustAllPackages" value="true"/>
+        <property name="trustedPackages">
+            <list>
+                <value>sys.model</value>
+                <value>com.example.model</value>
+            </list>
+        </property>
+        <property name="redeliveryPolicy" ref="activeMQRedeliveryPolicy"/>
+   </bean>
+    <bean id="activeMQRedeliveryPolicy" class="org.apache.activemq.RedeliveryPolicy">
+        <!--是否在每次尝试重新发送失败后,增长这个等待时间-->
+        <property name="useExponentialBackOff" value="true"></property>
+        <!--重发次数,默认为6次-->
+        <property name="maximumRedeliveries" value="2"></property>
+        <!--重发时间间隔,默认为1秒-->
+        <property name="initialRedeliveryDelay" value="1000"></property>
+        <!--第一次失败后重新发送之前等待500毫秒,第二次失败再等待500 * 2毫秒,这里的2就是value-->
+        <property name="backOffMultiplier" value="2"></property>
+        <!--最大传送延迟，只在useExponentialBackOff为true时有效（V5.5），假设首次重连间隔为10ms，倍数为2，那么第 二次重连时间间隔为 20ms，第三次重连时间间隔为40ms，当重连时间间隔大的最大重连时间间隔时，以后每次重连时间间隔都为最大重连时间间隔。-->
+        <property name="maximumRedeliveryDelay" value="1000"></property>
+    </bean>
+    <!--<amq:redeliveryPolicy id="activeMQRedeliveryPolicy" destination="*"-->
+            <!--redeliveryDelay="100" maximumRedeliveries="2" />-->
+
+       <!-- ActiveMQ 连接工厂 -->
+       <!-- 真正可以产生Connection的ConnectionFactory，由对应的 JMS服务厂商提供-->
+       <!-- 如果连接网络：tcp://ip:61616；未连接网络：tcp://localhost:61616 以及用户名，密码-->
+        <!--简版 -->
+    <!--使用此amq配置,类中注入连接工厂类为 org.apache.activemq.spring.ActiveMQConnectionFactory
+                                  或者org.apache.activemq.ActiveMQConnectionFactory  都可以  -->
+    <!--<amq:connectionFactory id="amqConnectionFactory"-->
+       <!--brokerURL="${jms.broker.url}" userName="${jms.broker.username}" password="${jms.broker.password}"-->
+              <!--trustAllPackages="true"-->
+            <!--/>-->
+
+       <!-- Spring Caching连接工厂 -->
+       <!-- Spring用于管理真正的ConnectionFactory的ConnectionFactory -->
+       <bean id="connectionFactory" class="org.springframework.jms.connection.CachingConnectionFactory">
+              <!-- 目标ConnectionFactory对应真实的可以产生JMS Connection的ConnectionFactory -->
+              <property name="targetConnectionFactory" ref="amqConnectionFactory"></property>
+              <!-- 同上，同理 -->
+              <!-- <constructor-arg ref="amqConnectionFactory" /> -->
+              <!-- Session缓存数量 -->
+              <property name="sessionCacheSize" value="100" />
+       </bean>
+      <!-- broker 没配置成功 -->
+    <!--<import resource="activemq-broker.xml"/>-->
+    <import resource="activemq-jmsTemplate.xml"/>
+    <import resource="activemq-listener.xml"/>
+
+
+</beans>

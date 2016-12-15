@@ -20,6 +20,7 @@
         <slf4j-version>1.7.16</slf4j-version>
         <log4j-version>1.2.17</log4j-version>
         <spring.security.version>3.2.3.RELEASE</spring.security.version>
+        <activemq.version>5.14.0</activemq.version>
     </properties>
     <repositories>
         <repository>
@@ -27,6 +28,14 @@
             <name>clojars Repository</name>
             <url>http://clojars.org/repo/</url>
         </repository>
+
+        <repository>
+            <id>nexus-aliyun</id>
+            <name>Nexus aliyun</name>
+            <layout>default</layout>
+            <url>http://maven.aliyun.com/nexus/content/groups/public</url>
+        </repository>
+
         <!--<repository>-->
             <!--<id>oschina</id>-->
             <!--<name>oschina Repository</name>-->
@@ -35,7 +44,7 @@
         <repository>
             <id>nexus</id>
             <name>Human Readable Name for this Mirror.</name>
-            <layout>default</layout>
+            <!--<layout>default</layout>-->
             <url>http://192.168.100.11:8081/nexus/content/groups/public/</url>
         </repository>
         <repository>
@@ -377,12 +386,44 @@
             <artifactId>spring-jms</artifactId>
             <version>${spring.version}</version>
         </dependency>
+      <!-- activemq -->
         <dependency>
             <groupId>org.apache.activemq</groupId>
-            <artifactId>activemq-all</artifactId>
-            <version>5.7.0</version>
+            <artifactId>activemq-client</artifactId>
+            <version>${activemq.version}</version>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/org.apache.xbean/xbean-spring -->
+        <dependency>
+            <groupId>org.apache.activemq</groupId>
+            <artifactId>activemq-openwire-legacy</artifactId>
+            <version>${activemq.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.activemq</groupId>
+            <artifactId>activemq-broker</artifactId>
+            <version>${activemq.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.activemq</groupId>
+            <artifactId>activemq-spring</artifactId>
+            <version>${activemq.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.activemq</groupId>
+            <artifactId>activemq-kahadb-store</artifactId>
+            <version>${activemq.version}</version>
+        </dependency>
+        <!-- activemq -->
+        <!--<include>${project.groupId}:activemq-client</include>-->
+        <!--<include>${project.groupId}:activemq-openwire-legacy</include>-->
+        <!--<include>${project.groupId}:activemq-camel</include>-->
+        <!--<include>${project.groupId}:activemq-jaas</include>-->
+        <!--<include>${project.groupId}:activemq-broker</include>-->
+        <!--<include>${project.groupId}:activemq-console</include>-->
+        <!--<include>${project.groupId}:activemq-shiro</include>-->
+        <!--<include>${project.groupId}:activemq-spring</include>-->
+        <!--<include>${project.groupId}:activemq-pool</include>-->
+        <!--<include>${project.groupId}:activemq-jms-pool</include>-->
+        <!--<include>${project.groupId}:activemq-kahadb-store</include>-->
         <dependency>
             <groupId>org.apache.xbean</groupId>
             <artifactId>xbean-spring</artifactId>
@@ -433,7 +474,6 @@
                     <warName>${project.artifactId}</warName>
                 </configuration>
             </plugin>
-
         </plugins>
     </build>
 

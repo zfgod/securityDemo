@@ -10,6 +10,12 @@
                                 一并学习处理消息发送及消息接收的 事务问题
             消息持久化的由来及应用场景，实现
             消息队列实际运用
+activemq 控制面板
+   = Number Of Consumers  消费者 这个是消费者端的消费者数量
+   = Number Of Pending Messages 等待消费的消息 这个是当前未出队列的数量。可以理解为总接收数-总出队列数
+   = Messages Enqueued 进入队列的消息  进入队列的总数量,包括出队列的。 这个数量只增不减
+   = Messages Dequeued 出了队列的消息  可以理解为是消费者消费掉的数量
+
 消息监听：
     The number of concurrent sessions/consumers to start for each listener.
    	Can either be a simple number indicating the maximum number (e.g. "5")
@@ -27,4 +33,47 @@ acknowledge:告知模式
     SESSION_TRANSACTED = 0    事务提交并确认
     此外AcitveMQ补充了一个自定义的ACK_MODE:
     INDIVIDUAL_ACKNOWLEDGE = 4    单条消息确认
+
+ack-type 客户端消费消息时返回broker（消息代理的）的指令
+   对于broker而言，只有接收到ACK指令,才会认为消息被正确的接收或者处理成功了,通过ACK，可以在consumer与Broker之间建立一种简单的“担保”机制.
+   DELIVERED_ACK_TYPE = 0      消息"已接收"，但尚未处理结束
+   STANDARD_ACK_TYPE = 2      "标准"类型,通常表示为消息"处理成功"，broker端可以删除消息了
+   POSION_ACK_TYPE = 1         消息"错误",通常表示"抛弃"此消息，比如消息重发多次后，都无法正确处理时，消息将会被删除或者DLQ(死信队列)
+                               死信队列（Dead Letter Queue）一般用于存放由于某种原因无法传递的消息，比如处理失败或者已经过期的消息。
+   REDELIVERED_ACK_TYPE = 3    消息需"重发"，比如consumer处理消息时抛出了异常，broker稍后会重新发送此消息
+   INDIVIDUAL_ACK_TYPE = 4     表示只确认"单条消息",无论在任何ACK_MODE下
+   UNMATCHED_ACK_TYPE = 5      BROKER间转发消息时,接收端"拒绝"消息
+
+消息重发策略：http://activemq.apache.org/message-redelivery-and-dlq-handling.html
+    Messages are redelivered to a client when any of the following occurs:
+    =A transacted session is used and rollback() is called.
+    =A transacted session is closed before commit() is called.
+    重要==A session is using CLIENT_ACKNOWLEDGE and Session.recover() is called.
+    A client connection times out (perhaps the code being executed takes longer than the configured time-out period).
+
+    Redelivery Policy: 重发策略
+    默认值：org.apache.activemq.RedeliveryPolicy
+                    protected int maximumRedeliveries = 6;//重投最大6次
+                    protected long maximumRedeliveryDelay = -1L;
+                    protected long initialRedeliveryDelay = 1000L;//重投间隔
+
+发送ObjectMessage
+   从<version>5.7.0</version> 升级至 <version>5.14.0</version>
+   http://activemq.apache.org/objectmessage.html
+   ObjectMessage objects depend on Java serialization of marshal/unmarshal object payload.
+   This process is generally considered unsafe as malicious payload can exploit the host system.
+   That's why starting with versions 5.12.2 and 5.13.0,
+   ActiveMQ enforces users to explicitly whitelist packages that can be exchanged using ObjectMessages.
+   If you need to exchange object messages, you need to add packages your applications are using.
+   You can do that with by using org.apache.activemq.SERIALIZABLE_PACKAGES system property,
+   interpreted by the broker and the activemq client library.
+   You can add this system property to ACTIVEMQ_OPTS variable in ${ACTIVEMQ_HOME}/bin/env script.
+
+   好吧 对象消息。。
+      跨系统时，发送端消息记录了对象的包名，并序列化传输
+      接收端获取对象时，需要确认此对象所在的包是否为白名单，并且能在接收系统同样的包下存在，才可以进行反序列化！！
+      oo  之前两个系统间一直是同一个对象实例，但是所在的包不同，一直无法转换。。
+
+死信队列：DLQ
+
 

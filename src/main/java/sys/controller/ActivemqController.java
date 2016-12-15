@@ -4,27 +4,30 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import sys.amq.productor.QueueProductor1;
-import sys.amq.productor.QueueProductor2;
-import sys.amq.productor.TopicProductor1;
+import sys.amq.producer.SessionQueueProducer;
+import sys.amq.producer.QueueProducer;
+import sys.amq.producer.TopicProducer;
+import sys.model.AmqObject;
 
 import javax.annotation.Resource;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
- * 
  * @author liang
  * @description controller测试
+ * /letGo 是系统放行匹配规则的设置
  */
 @Controller
 @RequestMapping("/activemq")
 public class ActivemqController {
 	
 	@Resource
-	QueueProductor1 queueSender1;
+	SessionQueueProducer sessionQueueProducer;
 	@Resource
-	QueueProductor2 queueSender2;
+	QueueProducer queueProducer;
 	@Resource
-	TopicProductor1 topicSender;
+	TopicProducer topicSender;
 	
 	/**
 	 * 发送消息到队列
@@ -38,7 +41,7 @@ public class ActivemqController {
 							  @RequestParam("message")String message){
 		String opt="";
 		try {
-			queueSender1.sendQueueMsg(name, message);
+			sessionQueueProducer.sendQueueMsg(name, message);
 			opt = "suc";
 		} catch (Exception e) {
 			opt = e.getCause().toString();
@@ -59,6 +62,39 @@ public class ActivemqController {
 		String opt = "";
 		try {
 			topicSender.send("test.topic", message);
+			opt = "suc";
+		} catch (Exception e) {
+			opt = e.getCause().toString();
+		}
+		return opt;
+	}
+
+	@ResponseBody
+	@RequestMapping("/letGo/topicObject")
+	public String topicObject(@RequestParam("destination")String destination
+			,@RequestParam("msg")String msg){
+		String opt = "";
+		try {
+			AmqObject o = new AmqObject();
+			o.setName(destination);
+			o.setMsg(msg);
+			topicSender.sendAmqObject(destination, o);
+			opt = "suc";
+		} catch (Exception e) {
+			opt = e.getCause().toString();
+		}
+		return opt;
+	}
+
+	@ResponseBody
+	@RequestMapping("/letGo/topicMap")
+	public String queueMap(@RequestParam("destination")String destination
+			,@RequestParam("msg")String msg){
+		String opt = "";
+		try {
+			Map<String,String> o = new HashMap();
+			o.put("msg",msg);
+			topicSender.sendAmqMap(destination, o);
 			opt = "suc";
 		} catch (Exception e) {
 			opt = e.getCause().toString();

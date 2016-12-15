@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans  xmlns="http://www.springframework.org/schema/beans"
+        xmlns:context="http://www.springframework.org/schema/context"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:amq="http://activemq.apache.org/schema/core"
+        xmlns:jms="http://www.springframework.org/schema/jms"
+        xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context-3.2.xsd
+        http://www.springframework.org/schema/jms
+        http://www.springframework.org/schema/jms/spring-jms-4.0.xsd
+        http://activemq.apache.org/schema/core
+        http://activemq.apache.org/schema/core/activemq.xsd">
+
+    <!-- 消息消费者 start-->
+    <!-- xml定义Queue监听器 ==点对点 -->
+          <!-- SESSION_TRANSACTED : 当session使用事务时，就是使用此模式。
+          在事务开启之后，和session.commit()之前，所有消费的消息，要么全部正常确认，要么全部redelivery。
+          这种严谨性，通常在基于GROUP(消息分组)或者其他场景下特别适合 -->
+    <jms:listener-container destination-type="queue" container-type="default"
+                            connection-factory="connectionFactory" acknowledge="transacted"
+                            concurrency="1">
+        <jms:listener destination="queue.ack.transacted" ref="queueTransactionalAckConsumer"/>
+    </jms:listener-container>
+          <!-- AUTO_ACKNOWLEDGE : 自动确认 -->
+    <jms:listener-container destination-type="queue" container-type="default"
+                            connection-factory="connectionFactory" acknowledge="auto"
+                            concurrency="1" >
+        <jms:listener destination="queue.ack.auto" ref="queueAutoAckConsumer"/>
+    </jms:listener-container>
+         <!--  CLIENT_ACKNOWLEDGE : 客户端手动确认
+          这就意味着AcitveMQ将不会“自作主张”的为你ACK任何消息，开发者需要自己择机确认-->
+    <jms:listener-container destination-type="queue" container-type="default"
+                            connection-factory="connectionFactory" acknowledge="client"
+                            concurrency="1">
+        <jms:listener destination="queue.ack.client" ref="queueClientAckConsumer"/>
+    </jms:listener-container>
+    <!-- 死信队列消息-->
+    <jms:listener-container destination-type="queue" container-type="default"
+                            connection-factory="connectionFactory" acknowledge="client"
+                            concurrency="1">
+        <jms:listener destination="ActiveMQ.DLQ" ref="queueDLQConsumer"/>
+    </jms:listener-container>
+
+
+
+
+
+    <!-- xml定义Topic监听器 -->
+    <jms:listener-container destination-type="topic" container-type="default"
+                            connection-factory="connectionFactory" acknowledge="auto"
+                            concurrency="1">
+        <!--<jms:listener destination="test.topic" ref="topicConsumer1"/>-->
+        <jms:listener destination="topic.ack.auto" ref="topicAutoAckConsumer"/>
+    </jms:listener-container>
+    <jms:listener-container destination-type="topic" container-type="default"
+                            connection-factory="connectionFactory" acknowledge="client"
+                            concurrency="1">
+        <!--<jms:listener destination="test.topic" ref="topicConsumer1"/>-->
+        <jms:listener destination="topic.ack.client" ref="topicClientAckConsumer"/>
+    </jms:listener-container>
+    <jms:listener-container destination-type="topic" container-type="default"
+                            connection-factory="connectionFactory" acknowledge="transacted"
+                            concurrency="1">
+        <!--<jms:listener destination="test.topic" ref="topicConsumer1"/>-->
+        <jms:listener destination="topic.ack.transacted" ref="topicTransactionalAckConsumer"/>
+    </jms:listener-container>
+
+    <jms:listener-container destination-type="topic" container-type="default"
+                            connection-factory="connectionFactory" acknowledge="transacted"
+                            concurrency="1">
+
+        <!--<jms:listener destination="test.topic" ref="topicConsumer1"/>-->
+        <jms:listener destination="topic.msg.object" ref="topicObjectConsumer"/>
+    </jms:listener-container>
+    <!-- 消息消费者 end -->
+
+</beans>

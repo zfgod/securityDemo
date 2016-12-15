@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans  xmlns="http://www.springframework.org/schema/beans"
+        xmlns:context="http://www.springframework.org/schema/context"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:amq="http://activemq.apache.org/schema/core"
+        xmlns:jms="http://www.springframework.org/schema/jms"
+        xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context-3.2.xsd
+        http://www.springframework.org/schema/jms
+        http://www.springframework.org/schema/jms/spring-jms-4.0.xsd
+        http://activemq.apache.org/schema/core
+        http://activemq.apache.org/schema/core/activemq-core-5.8.0.xsd">
+
+    <!-- 死信队列重定义,有默认的设置-->
+    <amq:broker  useJmx="false"  >
+        <!--<amq:transportConnectors>-->
+            <!--<amq:transportConnector uri="tcp://localhost:61616"/>-->
+        <!--</amq:transportConnectors>-->
+        <amq:destinationPolicy>
+            <amq:policyMap>
+                <amq:policyEntries>
+                    <!-- Set the following policy on all queues using the '>' wildcard 所有的队列使用这个通配符-->
+                    <amq:policyEntry queue=">">
+                        <amq:deadLetterStrategy>
+                            <!--
+                            The default Dead Letter Queue in ActiveMQ is called ActiveMQ.DLQ;
+                            Use the prefix 'DLQ.' for the destination name, and make the DLQ a queue rather than a topic
+                            -->
+                            <amq:individualDeadLetterStrategy queuePrefix="DLQ." useQueueForQueueMessages="true"/>
+                            <!--设置 非持久化消息是否放入死信队列，默认false -->
+                        </amq:deadLetterStrategy>
+                        <amq:deadLetterStrategy>
+                            <!-- processNonPersistent 非持久化消息是否放入死信队列，默认false
+                            processExpired  过期消息是否放入死信队列,默认true
+                            -->
+                            <amq:sharedDeadLetterStrategy processNonPersistent="true" processExpired="true"/>
+                        </amq:deadLetterStrategy>
+                    </amq:policyEntry>
+                </amq:policyEntries>
+            </amq:policyMap>
+        </amq:destinationPolicy>
+    </amq:broker>
+
+</beans>
