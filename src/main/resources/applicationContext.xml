@@ -72,10 +72,8 @@
         <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"></property>
     </bean>
     <!--注解扫描-->
-    <context:component-scan base-package="sys.service
-                                            ,sys.model
-                                            ,resource.secImpl
-                                            ,sys.amq"/>
+    <context:component-scan base-package="sys.service,sys.model,resource.secImpl"/>
+    <!--<context:component-scan base-package="sys.service,sys.model,resource.secImpl,sys.amq"/>-->
 
 
     <!-- 启用缓存注解功能，这个是必须的，否则注解不会生效，另外，该注解一定要声明在spring主配置文件中才会生效 -->
@@ -91,4 +89,5 @@
     </bean>
 
     <import resource="spring-transaction.xml"></import>
+    <import resource="spring-security.xml"></import>
 </beans>
