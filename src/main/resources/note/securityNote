@@ -6,6 +6,7 @@ security流程笔记
    ConfigAttribute configAttribute = new SecurityConfig("ROLE_" + resource.getResKey());
    				configAttributes.add(configAttribute);
    				resourceMap.put(resource.getResUrl(), configAttributes);
+
 2 用户登录完成:
   调用： authenticate(userName,password)
   Authentication authentication = myAuthenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username,password));

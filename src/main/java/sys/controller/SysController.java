@@ -65,7 +65,7 @@ public class SysController extends BaseController{
            securityContext.setAuthentication(authentication);
            session.setAttribute(ParamsUtils.user_security_sedssin, securityContext);
                    // 当验证都通过后，把用户信息放在session里
-           request.getSession().setAttribute(ParamsUtils.user_sessin, hasUser);
+           session.setAttribute(ParamsUtils.user_sessin, hasUser);
            addUserInServer(hasUser);
            result.put("code", 200);
            result.put("msg","登录成功！");

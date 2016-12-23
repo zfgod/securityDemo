@@ -25,12 +25,7 @@ import java.io.IOException;
  * 
  * 还可以直接使用注解对Action方法进行拦截，例如在方法上加：
  * @PreAuthorize("hasRole('ROLE_SUPER')")
- * 
- * 
- * @author
- * 2013-11-19
- * @Email: mmm333zzz520@163.com
- * @version 1.0v
+ *
  */
 @Service("mySecurityFilter")
 public class MySecurityFilter extends AbstractSecurityInterceptor implements Filter {
@@ -45,7 +40,6 @@ public class MySecurityFilter extends AbstractSecurityInterceptor implements Fil
 	
 	@PostConstruct
 	public void init(){
-//		System.err.println(" ---------------  MySecurityFilter init--------------- ");
 		super.setAuthenticationManager(myAuthenticationManager);
 		super.setAccessDecisionManager(accessDecisionManager);
 	}
@@ -62,13 +56,6 @@ public class MySecurityFilter extends AbstractSecurityInterceptor implements Fil
 	}
 	
 	private void invoke(FilterInvocation fi) throws IOException, ServletException {
-		// object为FilterInvocation对象
-                  //super.beforeInvocation(fi);源码
-		//1.获取请求资源的权限
-		//执行Collection<ConfigAttribute> attributes = SecurityMetadataSource.getAttributes(object);
-		//2.是否拥有权限
-		//this.accessDecisionManager.decide(authenticated, object, attributes);
-//		System.err.println(" ---------------  MySecurityFilter invoke--------------- ");
 		InterceptorStatusToken token = super.beforeInvocation(fi);
 		try {
 			fi.getChain().doFilter(fi.getRequest(), fi.getResponse());
@@ -86,7 +73,6 @@ public class MySecurityFilter extends AbstractSecurityInterceptor implements Fil
 
 	@Override
 	public Class<? extends Object> getSecureObjectClass() {
-		//下面的MyAccessDecisionManager的supports方面必须放回true,否则会提醒类型错误
 		return FilterInvocation.class;
 	}
 }

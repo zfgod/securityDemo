@@ -373,13 +373,6 @@
             <version>2.2.1</version>
         </dependency>
 
-        <!--junit4-->
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.11</version>
-            <scope>test</scope>
-        </dependency>
         <!-- jms , activeMQ , xbean-->
         <dependency>
             <groupId>org.springframework</groupId>
