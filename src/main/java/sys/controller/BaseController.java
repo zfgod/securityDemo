@@ -1,5 +1,9 @@
 package sys.controller;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import sys.model.Role;
 import sys.model.User;
@@ -10,6 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -100,5 +105,16 @@ public class BaseController {
     public Integer getLoginUserId(){
         User loginUser = (User) session.getAttribute(ParamsUtils.user_sessin);
         return  loginUser.getUserId();
+    }
+    public String hasFieldErrors(BindingResult errorsResult){
+        List<FieldError> filedErrors= errorsResult.getFieldErrors();
+        StringBuffer errorMsgs = new StringBuffer();
+        for(FieldError error:filedErrors){
+            errorMsgs.append(error.getDefaultMessage());
+        }
+        JSONObject result = new JSONObject();
+        result.put("code",500);
+        result.put("msg",errorMsgs);
+        return JSON.toJSONString(result);
     }
 }

@@ -2,6 +2,13 @@ package sys.model;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.NotBlank;
+import sys.controller.SysController;
+import sys.controller.UserController;
+import sys.model.validateGroups.UserTest1;
+import sys.model.validateGroups.UserTest2;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
@@ -17,6 +24,7 @@ public class User implements Serializable{
     private Integer userId;
 
     @Column(name = "userName")
+    @Length(min = 2,max = 6,message = "姓名为2-6个字母或数字组成！",groups = {UserTest1.class})
     private String userName;
 
     @Column(name="userPassword")
@@ -33,6 +41,8 @@ public class User implements Serializable{
     private String userQQ;
 
     @Column(name = "regTime")
+    //这里模拟在用户Controller里面不需要校验注册时间
+    @NotBlank(message = "注册时间不能为空！",groups = {UserTest2.class})
     private Date regTime;
 
     @Column(name = "status")

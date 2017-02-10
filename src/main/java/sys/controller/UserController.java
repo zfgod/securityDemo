@@ -3,12 +3,15 @@ package sys.controller;
 import com.alibaba.fastjson.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import sys.model.Role;
 import sys.model.User;
+import sys.model.validateGroups.UserTest1;
 import sys.service.RoleService;
 import sys.service.UserService;
 
@@ -31,7 +34,12 @@ public class UserController extends BaseController {
 
     @RequestMapping(value = "/letGo/testDateConverter",method = RequestMethod.POST)
     @ResponseBody
-    public Object dateUsers(User user){
+    public Object dateUsers(@Validated(value = {UserTest1.class}) //只校验标记分组含UserTest1的字段
+                                User user,
+                            BindingResult bindingResult){
+        if(bindingResult.hasErrors()){//测试同一个vo对象里面书写校验规则,并运用到指定的group中
+            return hasFieldErrors(bindingResult);
+        }
         //测试日期转换器配置,读取时间字符串转换为日期
         JSONObject result = new JSONObject();
         Date regTime = user.getRegTime();
