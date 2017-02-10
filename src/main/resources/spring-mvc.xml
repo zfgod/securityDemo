@@ -12,7 +12,7 @@
     <!-- 注解扫描范围-->
     <context:component-scan base-package="*.controller"></context:component-scan>
     <!-- 控制器映射器和控制器适配器-->
-    <mvc:annotation-driven>
+    <mvc:annotation-driven conversion-service="conversionServices">
         <mvc:message-converters register-defaults="true">
             <bean class="org.springframework.http.converter.StringHttpMessageConverter">
                 <property name="supportedMediaTypes">
@@ -36,9 +36,21 @@
                     </list>
                 </property>
             </bean>
-        </mvc:message-converters>
-    </mvc:annotation-driven>
 
+        </mvc:message-converters>
+
+    </mvc:annotation-driven>
+    <!-- 其他转换配置 -->
+    <bean id="conversionServices"
+          class="org.springframework.format.support.FormattingConversionServiceFactoryBean">
+        <property name="converters">
+            <list>
+                <!-- 日期解析  -->
+                <bean class="common.converters.DateStringConverter"/>
+            </list>
+
+        </property>
+    </bean>
     <!--静态资源的默认执行-->
     <mvc:default-servlet-handler/>
     <!-- 视图解析器-->

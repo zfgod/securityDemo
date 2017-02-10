@@ -12,6 +12,7 @@ import sys.model.User;
 import sys.service.RoleService;
 import sys.service.UserService;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -27,6 +28,16 @@ public class UserController extends BaseController {
 
     @Autowired
     private RoleService roleService ;
+
+    @RequestMapping(value = "/letGo/testDateConverter",method = RequestMethod.POST)
+    @ResponseBody
+    public Object dateUsers(User user){
+        //测试日期转换器配置,读取时间字符串转换为日期
+        JSONObject result = new JSONObject();
+        Date regTime = user.getRegTime();
+        result.put("time",regTime);
+        return result;
+    }
 
     @RequestMapping(value = "/query",method = RequestMethod.POST)
     @ResponseBody
