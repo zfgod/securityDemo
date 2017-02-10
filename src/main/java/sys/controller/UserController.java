@@ -37,6 +37,12 @@ public class UserController extends BaseController {
     public Object dateUsers(@Validated(value = {UserTest1.class}) //只校验标记分组含UserTest1的字段
                                 User user,
                             BindingResult bindingResult){
+        /*
+           必须是 @Validated，@Valid不行
+         *参数校验-对使用同一个vo对象进行校验，但是存在字段的冲突时，采用给校验分组的方式分别校验
+         *字段上面的校验注解加入需要校验的分组（可以多个，被多个接口同时使用），
+         *在接口中校验是指定明确的校验分组 （唯一，只校验被此分组标记的校验规则）
+         */
         if(bindingResult.hasErrors()){//测试同一个vo对象里面书写校验规则,并运用到指定的group中
             return hasFieldErrors(bindingResult);
         }
