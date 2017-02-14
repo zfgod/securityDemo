@@ -77,6 +77,18 @@
 
     <!-- 其他工程引入  以及 本工程jar包依赖导入-->
     <dependencies>
+        <!-- redis -->
+        <dependency>
+            <groupId>org.springframework.data</groupId>
+            <artifactId>spring-data-redis</artifactId>
+            <version>1.7.2.RELEASE</version>
+        </dependency>
+        <!-- jedis redis客户端-->
+        <dependency>
+            <groupId>redis.clients</groupId>
+            <artifactId>jedis</artifactId>
+            <version>2.9.0</version>
+        </dependency>
         <!--jar 包-->
         <!-- hibernate 校验-->
         <dependency>

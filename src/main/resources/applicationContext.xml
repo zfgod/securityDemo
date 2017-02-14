@@ -18,6 +18,7 @@
             <value>classpath:config.properties</value>
             <value>classpath:jdbc.properties</value>
             <value>classpath:config/msg.properties</value>
+            <value>classpath:config/redis.properties</value>
             <value>classpath:activemq/amq.properties</value>
         </list>
     </property>
@@ -72,7 +73,7 @@
         <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"></property>
     </bean>
     <!--注解扫描-->
-    <context:component-scan base-package="sys.service,sys.model,resource.secImpl"/>
+    <context:component-scan base-package="sys.service,sys.model,resource.secImpl,resource.redis"/>
     <!--<context:component-scan base-package="sys.service,sys.model,resource.secImpl,sys.amq"/>-->
 
 
@@ -90,4 +91,5 @@
 
     <import resource="spring-transaction.xml"></import>
     <import resource="spring-security.xml"></import>
+    <import resource="spring-redis.xml"></import>
 </beans>
