@@ -38,3 +38,4 @@
    4. jms消息服务：spring整合activeMQ
      +  发送消息
      +  异步监听消息
+   5. spring集成redis,使用jedis客户端分片连接池,实现简单存取数据的应用
