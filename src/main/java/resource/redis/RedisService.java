@@ -18,6 +18,20 @@ public class RedisService {
 
     @Autowired(required = false)//如果容器中有就注入，如果没有就忽略
     private ShardedJedisPool shardedJedisPool;
+
+    public <T> T execute(Function<ShardedJedis, T> fun) {
+        ShardedJedis shardedJedis = null;
+        try {
+            // 从连接池中获取到jedis分片对象
+            shardedJedis = shardedJedisPool.getResource();
+            return fun.callback(shardedJedis);
+        } finally {
+            if (null != shardedJedis) {
+                // 关闭，检测连接是否有效，有效则放回到连接池中，无效则重置状态
+                shardedJedis.close();
+            }
+        }
+    }
     
     /**
      * 存储hash结果数据
@@ -117,19 +131,7 @@ public class RedisService {
     }
     
     
-    public <T> T execute(Function<ShardedJedis, T> fun) {
-        ShardedJedis shardedJedis = null;
-        try {
-            // 从连接池中获取到jedis分片对象
-            shardedJedis = shardedJedisPool.getResource();
-            return fun.callback(shardedJedis);
-        } finally {
-            if (null != shardedJedis) {
-                // 关闭，检测连接是否有效，有效则放回到连接池中，无效则重置状态
-                shardedJedis.close();
-            }
-        }
-    }
+
 
     /**
      * 保存数据到Redis

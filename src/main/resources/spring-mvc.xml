@@ -38,7 +38,6 @@
             </bean>
 
         </mvc:message-converters>
-
     </mvc:annotation-driven>
     <!-- 其他转换配置 -->
     <bean id="conversionServices"
