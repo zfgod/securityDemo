@@ -48,7 +48,9 @@ public class SessionQueueProducer {
             producer = session.createProducer(queue);
             producer.setDeliveryMode(DeliveryMode.NON_PERSISTENT);//非持久化
             producer.send(textMessage);
-            session.commit();
+            if(session.getTransacted()){
+                session.commit();
+            }
         } catch (JMSException e) {
             System.out.println("消息发送失败！");
             e.printStackTrace();
